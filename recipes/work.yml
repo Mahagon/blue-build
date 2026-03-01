@@ -23,7 +23,6 @@ modules:
       - firefox-langpacks
   - type: script
     scripts:
-      - install-claude-code.sh
       - install-granted.sh
       - install-helm-diff.sh
       - install-helmfile.sh
