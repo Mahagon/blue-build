@@ -6,8 +6,14 @@ base-image: quay.io/fedora-ostree-desktops/cosmic
 image-version: 43
 modules:
   - type: rpm-ostree
+    repos:
+      - https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
     install:
       - htop
+      - kubernetes-client
+      - helm
+      - terraform
+      - k9s
     remove:
       - firefox
       - firefox-langpacks
