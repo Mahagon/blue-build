@@ -8,7 +8,7 @@ export CLAUDEINSTALL=/tmp/claude-install
 home="$CLAUDEINSTALL"
 mkdir -p "$CLAUDEINSTALL"
 curl -fsSL https://claude.ai/install.sh | bash -s "${CLAUDE_CODE_VERSION}"
-cp "$CLAUDEINSTALL/.claude/local/claude" /usr/local/bin/claude
-chmod +x /usr/local/bin/claude
+cp "$CLAUDEINSTALL/.claude/local/claude" /usr/bin/claude
+chmod +x /usr/bin/claude
 rm -rf "$CLAUDEINSTALL"
 export HOME="$home"
