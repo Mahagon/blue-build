@@ -21,6 +21,8 @@ modules:
         - com.visualstudio.code
         - com.brave.Browser
         - io.dbeaver.DBeaverCommunity
+        - io.dbeaver.DBeaverCommunity.Client.pgsql
+        - io.dbeaver.DBeaverCommunity.Client.mariadb
   - type: files
     files:
       - source: system
