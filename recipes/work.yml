@@ -14,13 +14,20 @@ modules:
       - helm
       - terraform
       - k9s
+      - gh
+      - azure-cli
+      - nodejs
     remove:
       - firefox
       - firefox-langpacks
-  # - type: script
-  #   scripts:
-  #     - install-helmfile.sh
-  #     - install-helm-diff.sh
+  - type: script
+    scripts:
+      - install-aws-cli.sh
+      - install-claude-code.sh
+      - install-granted.sh
+      - install-helm-diff.sh
+      - install-helmfile.sh
+      - install-kubelogin.sh
   - type: default-flatpaks
     configurations:
       - scope: system
