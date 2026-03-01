@@ -1,0 +1,19 @@
+---
+name: work-cosmic-desktop
+description: Fedora COSMIC Atomic image for work
+base-image: quay.io/fedora-ostree-desktops/cosmic
+image-version: 43
+modules:
+  - type: rpm-ostree
+    install:
+      - htop
+    remove:
+      - firefox
+      - firefox-langpacks
+  - type: flatpak
+    install:
+      - com.visualstudio.code
+  - type: files
+    files:
+      - source: system
+        destination: /
