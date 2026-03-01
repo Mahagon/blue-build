@@ -28,6 +28,7 @@ modules:
       - firefox-langpacks
   - type: script
     scripts:
+      - install-bw.sh
       - install-granted.sh
       - install-helm-diff.sh
       - install-helmfile.sh
