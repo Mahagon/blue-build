@@ -24,6 +24,7 @@ modules:
         - io.dbeaver.DBeaverCommunity.Client.pgsql
         - io.dbeaver.DBeaverCommunity.Client.mariadb
         - io.github.peazip.PeaZip
+        - com.bitwarden.desktop
   - type: files
     files:
       - source: system
