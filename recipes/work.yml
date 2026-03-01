@@ -20,6 +20,7 @@ modules:
       install:
         - com.visualstudio.code
         - com.brave.Browser
+        - io.dbeaver.DBeaverCommunity
   - type: files
     files:
       - source: system
