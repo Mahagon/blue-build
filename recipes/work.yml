@@ -22,19 +22,18 @@ modules:
   #     - install-helmfile.sh
   #     - install-helm-diff.sh
   - type: default-flatpaks
-    notify: true
-    system:
-      repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
-      repo-name: flathub
-      repo-title: "Flathub (system-wide)"
-      install:
-        - com.visualstudio.code
-        - com.brave.Browser
-        - io.dbeaver.DBeaverCommunity
-        - io.dbeaver.DBeaverCommunity.Client.pgsql
-        - io.dbeaver.DBeaverCommunity.Client.mariadb
-        - io.github.peazip.PeaZip
-        - com.bitwarden.desktop
+    configurations:
+      - scope: system
+        repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        repo-name: flathub
+        install:
+          - com.visualstudio.code
+          - com.brave.Browser
+          - io.dbeaver.DBeaverCommunity
+          - io.dbeaver.DBeaverCommunity.Client.pgsql
+          - io.dbeaver.DBeaverCommunity.Client.mariadb
+          - io.github.peazip.PeaZip
+          - com.bitwarden.desktop
   - type: files
     files:
       - source: system
