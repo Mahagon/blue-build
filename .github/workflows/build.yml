@@ -6,6 +6,8 @@ on:
   push:
     paths-ignore:
       - "**.md"
+      - ".github/renovate.json"
+      - ".github/CODEOWNERS"
   pull_request:
   workflow_dispatch:
 concurrency:
