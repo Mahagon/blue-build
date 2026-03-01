@@ -22,6 +22,7 @@ modules:
       - awscli2
       - openconnect
       - NetworkManager-openconnect
+      - chezmoi
     remove:
       - firefox
       - firefox-langpacks
