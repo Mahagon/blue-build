@@ -17,10 +17,10 @@ modules:
     remove:
       - firefox
       - firefox-langpacks
-  - type: script
-    scripts:
-      - install-helmfile.sh
-      - install-helm-diff.sh
+  # - type: script
+  #   scripts:
+  #     - install-helmfile.sh
+  #     - install-helm-diff.sh
   - type: default-flatpaks
     notify: true
     system:
