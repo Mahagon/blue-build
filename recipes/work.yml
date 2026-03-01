@@ -17,6 +17,7 @@ modules:
       - terraform
       - k9s
       - gh
+      - tig
       - azure-cli
       - awscli2
       - openconnect
