@@ -8,8 +8,10 @@ modules:
   - type: rpm-ostree
     repos:
       - https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+      - https://packages.microsoft.com/yumrepos/vscode/config.repo
     install:
       - htop
+      - code
       - kubernetes-client
       - helm
       - terraform
@@ -33,7 +35,6 @@ modules:
         repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
         repo-name: flathub
         install:
-          - com.visualstudio.code
           - com.brave.Browser
           - io.dbeaver.DBeaverCommunity
           - io.dbeaver.DBeaverCommunity.Client.pgsql
