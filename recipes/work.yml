@@ -18,6 +18,7 @@ modules:
       - azure-cli
       - awscli2
       - nodejs
+      - openconnect
     remove:
       - firefox
       - firefox-langpacks
