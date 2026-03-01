@@ -21,6 +21,7 @@ modules:
       - azure-cli
       - awscli2
       - openconnect
+      - networkmanager-openconnect
     remove:
       - firefox
       - firefox-langpacks
