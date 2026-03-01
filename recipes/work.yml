@@ -23,6 +23,7 @@ modules:
       - openconnect
       - NetworkManager-openconnect
       - NetworkManager-openconnect-gnome
+      - gnome-keyring
       - chezmoi
     remove:
       - firefox
