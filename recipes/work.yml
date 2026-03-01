@@ -23,6 +23,7 @@ modules:
         - io.dbeaver.DBeaverCommunity
         - io.dbeaver.DBeaverCommunity.Client.pgsql
         - io.dbeaver.DBeaverCommunity.Client.mariadb
+        - io.github.peazip.PeaZip
   - type: files
     files:
       - source: system
