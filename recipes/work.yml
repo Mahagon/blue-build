@@ -19,6 +19,7 @@ modules:
       repo-title: "Flathub (system-wide)"
       install:
         - com.visualstudio.code
+        - com.brave.Browser
   - type: files
     files:
       - source: system
