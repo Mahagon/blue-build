@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=github-tags depName=aws/aws-cli
-AWS_CLI_VERSION="2.27.31"
+AWS_CLI_VERSION="2.34.0"
 
 curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" \
   -o /tmp/awscli.zip
