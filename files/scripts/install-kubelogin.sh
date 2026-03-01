@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=github-releases depName=Azure/kubelogin
-KUBELOGIN_VERSION="0.2.13"
+KUBELOGIN_VERSION="0.2.15"
 
 curl -fsSL "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip" \
   -o /tmp/kubelogin.zip
