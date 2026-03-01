@@ -34,6 +34,7 @@ modules:
           - io.dbeaver.DBeaverCommunity.Client.mariadb
           - io.github.peazip.PeaZip
           - com.bitwarden.desktop
+          - com.github.IsmaelMartinez.teams_for_linux
   - type: files
     files:
       - source: system
