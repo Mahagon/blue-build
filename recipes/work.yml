@@ -16,13 +16,13 @@ modules:
       - k9s
       - gh
       - azure-cli
+      - awscli2
       - nodejs
     remove:
       - firefox
       - firefox-langpacks
   - type: script
     scripts:
-      - install-aws-cli.sh
       - install-claude-code.sh
       - install-granted.sh
       - install-helm-diff.sh
