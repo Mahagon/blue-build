@@ -1,4 +1,4 @@
-# BlueBuild Template &nbsp; [![bluebuild build badge](https://github.com/blue-build/template/actions/workflows/build.yml/badge.svg)](https://github.com/blue-build/template/actions/workflows/build.yml)
+# BlueBuild Template &nbsp; [![bluebuild build badge](https://github.com/mahagon/blue-build/actions/workflows/build.yml/badge.svg)](https://github.com/mahagon/blue-build/actions/workflows/build.yml)
 
 See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
 
@@ -6,25 +6,32 @@ After setup, it is recommended you update this README to describe your custom im
 
 ## Installation
 
-> [!WARNING]  
+> [!WARNING]
 > [This is an experimental feature](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable), try at your own discretion.
 
 To rebase an existing atomic Fedora installation to the latest build:
 
 - First rebase to the unsigned image, to get the proper signing keys and policies installed:
+
+  ```shell
+  rpm-ostree rebase ostree-unverified-registry:ghcr.io/mahagon/blue-build:latest
   ```
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/blue-build/template:latest
-  ```
+
 - Reboot to complete the rebase:
-  ```
+
+  ```shell
   systemctl reboot
   ```
+
 - Then rebase to the signed image, like so:
+
+  ```shell
+  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mahagon/blue-build:latest
   ```
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/blue-build/template:latest
-  ```
+
 - Reboot again to complete the installation
-  ```
+
+  ```shell
   systemctl reboot
   ```
 
@@ -38,6 +45,6 @@ If build on Fedora Atomic, you can generate an offline ISO with the instructions
 
 These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](https://github.com/sigstore/cosign). You can verify the signature by downloading the `cosign.pub` file from this repo and running the following command:
 
-```bash
-cosign verify --key cosign.pub ghcr.io/blue-build/template
+```shell
+cosign verify --key cosign.pub ghcr.io/mahagon/blue-build
 ```
