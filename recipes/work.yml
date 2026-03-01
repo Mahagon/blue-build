@@ -20,6 +20,7 @@ modules:
   - type: script
     scripts:
       - install-helmfile.sh
+      - install-helm-diff.sh
   - type: default-flatpaks
     notify: true
     system:
