@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update version variables in install scripts",
+      "fileMatch": ["scripts/.+\\.sh$"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\w+=\\\"(?<currentValue>.+?)\\\""
+      ]
+    }
+  ]
+}
