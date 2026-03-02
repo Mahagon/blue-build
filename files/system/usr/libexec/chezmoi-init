@@ -2,12 +2,13 @@
 set -euo pipefail
 
 CHEZMOI_CONFIG="${HOME}/.config/chezmoi/chezmoi.toml"
+CHEZMOI_SOURCE="/usr/share/chezmoi-source"
 
 mkdir -p "$(dirname "${CHEZMOI_CONFIG}")"
 
-cat > "${CHEZMOI_CONFIG}" << 'EOF'
+cat > "${CHEZMOI_CONFIG}" << EOF
 [chezmoi]
-  sourceDir = "/usr/share/chezmoi-source"
+  sourceDir = "${CHEZMOI_SOURCE}"
 EOF
 
-exec /usr/bin/chezmoi apply --no-tty
+exec /usr/bin/chezmoi apply --no-tty --source "${CHEZMOI_SOURCE}"
