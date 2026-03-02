@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Teams for Linux
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=teams-for-linux --file-forwarding com.github.IsmaelMartinez.teams_for_linux @@u %U @@
+Terminal=false
+Type=Application
+Icon=com.github.IsmaelMartinez.teams_for_linux
+StartupWMClass=teams-for-linux
+Categories=Chat;Network;Office;
+X-Flatpak=com.github.IsmaelMartinez.teams_for_linux
