@@ -2,14 +2,12 @@
 name: bluebuild
 on:
   schedule:
-    - cron: "00 06 * * *"
+    - cron: "15 04 * * *"
   push:
     paths-ignore:
       - "**.md"
       - ".github/renovate.json"
       - ".github/CODEOWNERS"
-  pull_request:
-  workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
