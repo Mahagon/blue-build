@@ -5,6 +5,10 @@ description: Fedora COSMIC Atomic image for work
 base-image: quay.io/fedora-ostree-desktops/cosmic-atomic
 image-version: 43
 modules:
+  - type: files
+    files:
+      - source: system
+        destination: /
   - type: rpm-ostree
     repos:
       - https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
@@ -51,7 +55,3 @@ modules:
           - io.github.peazip.PeaZip
           - com.bitwarden.desktop
           - com.github.IsmaelMartinez.teams_for_linux
-  - type: files
-    files:
-      - source: system
-        destination: /
