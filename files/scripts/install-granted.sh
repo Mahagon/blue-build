@@ -4,6 +4,7 @@ set -euo pipefail
 # renovate: datasource=github-releases depName=fwdcloudsec/granted
 GRANTED_VERSION="0.38.0"
 
+echo "Installing granted ${GRANTED_VERSION}..."
 curl -fsSL "https://releases.commonfate.io/granted/v${GRANTED_VERSION}/granted_${GRANTED_VERSION}_linux_x86_64.tar.gz" \
   -o /tmp/granted.tar.gz
 tar xzf /tmp/granted.tar.gz -C /tmp granted assumego assume assume.fish
