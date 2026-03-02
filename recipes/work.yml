@@ -39,6 +39,7 @@ modules:
   - type: containerfile
     snippets:
       - RUN setcap cap_net_admin=eip /usr/bin/openconnect
+      - RUN chmod u+s /usr/bin/newuidmap /usr/bin/newgidmap
   - type: script
     scripts:
       - install-bw.sh
