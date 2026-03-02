@@ -1,0 +1,11 @@
+[Unit]
+Description=Apply chezmoi dotfiles (first login)
+ConditionPathExists=!%h/.config/chezmoi/chezmoi.toml
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/chezmoi-init
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
