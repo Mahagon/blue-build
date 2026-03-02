@@ -24,3 +24,10 @@ cleanup_k8s_az_credentials() {
   kubectl config unset "users.zvoove-saas-$environment"
   kubectl config unset "users.clusterUser_RGAZSAAS_zvoove-saas-$environment"
 }
+
+if [[ -n "${BASH_VERSION:-}" ]]; then
+  _zvoove_environments() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    mapfile -t COMPREPLY < <(compgen -W "predev dev staging prod" -- "$cur")
+  }
+fi

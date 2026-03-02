@@ -16,7 +16,7 @@ k9saz() {
     _K9SAZ_CLEANUP_ENV="$environment"
     trap 'cleanup_k8s_az_credentials "$_K9SAZ_CLEANUP_ENV"' EXIT
   fi
-  # shellcheck disable=SC2034
+  # shellcheck disable=SC2034 -- used via dynamic scoping in get_k8s_az_credentials
   local resourcegroup
   resourcegroup=$(yq -r .terraformStateResourceGroup "$HOME/Documents/src/zvoove-SaaS/pipelines/saas-infrastructure/environment/${environment}.yaml")
   (az aks list || az login) &> /dev/null
@@ -25,10 +25,5 @@ k9saz() {
 }
 
 if [[ -n "${BASH_VERSION:-}" ]]; then
-  _k9s_complete_environment() {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    mapfile -t COMPREPLY < <(compgen -W "predev dev staging prod" -- "$cur")
-  }
-  complete -F _k9s_complete_environment k9saws
-  complete -F _k9s_complete_environment k9saz
+  complete -F _zvoove_environments k9saws k9saz
 fi

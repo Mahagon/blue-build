@@ -2,80 +2,31 @@
 
 export HELM_DIFF_COLOR=true
 
-ha() {
+_helmfile_run() {
+  local verb=$1 __subfolder=$2 __environment=${3:-predev}
   local parent_folder
   parent_folder="$(basename "$(pwd)")"
-  local __subfolder=${1}
-  local __environment=${2:-predev}
   if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
     get_k8s_az_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="apply --context 3" "./k8s/${__subfolder}/setup.sh"
+    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="$verb" "./k8s/${__subfolder}/setup.sh"
   elif [[ "$parent_folder" == "platform-engineering" ]]; then
     get_k8s_aws_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="apply --context 3" "./infrastructure/k8s/${__subfolder}/setup.sh"
+    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="$verb" "./infrastructure/k8s/${__subfolder}/setup.sh"
   fi
 }
 
-hs() {
-  local parent_folder
-  parent_folder="$(basename "$(pwd)")"
-  local __subfolder=${1}
-  local __environment=${2:-predev}
-  if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-    get_k8s_az_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="sync" "./k8s/${__subfolder}/setup.sh"
-  elif [[ "$parent_folder" == "platform-engineering" ]]; then
-    get_k8s_aws_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="sync" "./infrastructure/k8s/${__subfolder}/setup.sh"
-  fi
-}
-
-hd() {
-  local parent_folder
-  parent_folder="$(basename "$(pwd)")"
-  local __subfolder=${1}
-  local __environment=${2:-predev}
-  if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-    get_k8s_az_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="diff --context 3" "./k8s/${__subfolder}/setup.sh"
-  elif [[ "$parent_folder" == "platform-engineering" ]]; then
-    get_k8s_aws_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="diff --context 3" "./infrastructure/k8s/${__subfolder}/setup.sh"
-  fi
-}
-
-ht() {
-  local parent_folder
-  parent_folder="$(basename "$(pwd)")"
-  local __subfolder=${1}
-  local __environment=${2:-predev}
-  if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-    get_k8s_az_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="template" "./k8s/${__subfolder}/setup.sh"
-  elif [[ "$parent_folder" == "platform-engineering" ]]; then
-    get_k8s_aws_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="template" "./infrastructure/k8s/${__subfolder}/setup.sh"
-  fi
-}
+ha()       { _helmfile_run "apply --context 3" "$@"; }
+hs()       { _helmfile_run "sync"              "$@"; }
+hd()       { _helmfile_run "diff --context 3"  "$@"; }
+ht()       { _helmfile_run "template"          "$@"; }
 
 hdestroy() {
-  local parent_folder
-  parent_folder="$(basename "$(pwd)")"
   local __subfolder=${1}
   local __environment=${2:-predev}
-  if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-    get_k8s_az_credentials "$__environment"
-  elif [[ "$parent_folder" == "platform-engineering" ]]; then
-    get_k8s_aws_credentials "$__environment"
-  fi
   read -r -n 1 -p "Are you sure to destroy the ${__subfolder} deployment? [press y] " REPLY
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-      ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="destroy" "./k8s/${__subfolder}/setup.sh"
-    elif [[ "$parent_folder" == "platform-engineering" ]]; then
-      ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="destroy" "./infrastructure/k8s/${__subfolder}/setup.sh"
-    fi
+    _helmfile_run "destroy" "$__subfolder" "$__environment"
   else
     echo abort
   fi
@@ -95,15 +46,10 @@ if [[ -n "${BASH_VERSION:-}" ]]; then
     mapfile -t COMPREPLY < <(compgen -W "$subfolders" -- "$cur")
   }
 
-  _helmfile_environments() {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    mapfile -t COMPREPLY < <(compgen -W "predev dev staging prod" -- "$cur")
-  }
-
   _helmfile_complete() {
     case $COMP_CWORD in
       1) _helmfile_subfolders ;;
-      2) _helmfile_environments ;;
+      2) _zvoove_environments ;;
     esac
   }
 
