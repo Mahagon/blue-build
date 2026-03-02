@@ -20,6 +20,7 @@ modules:
       - htop
       - code
       - kubernetes-client
+      - just
       - helm
       - terraform
       - k9s
