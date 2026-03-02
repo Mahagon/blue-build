@@ -33,6 +33,8 @@ modules:
       - gnome-keyring
       - chezmoi
       - starship
+      - pre-commit
+      - nodejs
     remove:
       - firefox
       - firefox-langpacks
@@ -47,6 +49,9 @@ modules:
       - install-helm-diff.sh
       - install-helmfile.sh
       - install-kubelogin.sh
+      - install-tflint.sh
+      - install-shfmt.sh
+      - install-prettier.sh
   - type: default-flatpaks
     configurations:
       - scope: system

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# renovate: datasource=github-releases depName=terraform-linters/tflint
+TFLINT_VERSION="0.61.0"
+
+curl -fsSL "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
+  -o /tmp/tflint.zip
+unzip -p /tmp/tflint.zip tflint > /usr/bin/tflint
+chmod +x /usr/bin/tflint
+rm -f /tmp/tflint.zip
