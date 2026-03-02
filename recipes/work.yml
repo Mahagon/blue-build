@@ -35,6 +35,7 @@ modules:
       - starship
       - pre-commit
       - nodejs
+      - fzf
     remove:
       - firefox
       - firefox-langpacks
@@ -52,6 +53,7 @@ modules:
       - install-tflint.sh
       - install-shfmt.sh
       - install-prettier.sh
+      - install-yq.sh
   - type: default-flatpaks
     configurations:
       - scope: system
