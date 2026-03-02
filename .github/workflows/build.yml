@@ -32,4 +32,6 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
+          use_cache: true
+          build_chunked_oci: true
           maximize_build_space: false # Set to true, if space is an issue.
