@@ -28,6 +28,9 @@ modules:
     remove:
       - firefox
       - firefox-langpacks
+  - type: containerfile
+    snippets:
+      - RUN setcap cap_net_admin=eip /usr/bin/openconnect
   - type: script
     scripts:
       - install-bw.sh
