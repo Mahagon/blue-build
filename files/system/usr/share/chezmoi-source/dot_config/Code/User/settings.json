@@ -60,9 +60,6 @@
   "git.fetchOnPull": true,
   "git.pullTags": true,
   "git.rebaseWhenSync": true,
-  "gitblame.ignoreWhitespace": true,
-  "gitblame.inlineMessageEnabled": true,
-  "gitblame.inlineMessageFormat": "[${author.name} (${time.ago})] ${commit.summary}",
   "chat.tools.terminal.autoApprove": {
     "/^git (status|log|show\\b.*)$/": true
   },
@@ -95,9 +92,6 @@
     "markdown": true,
     "enableAutoCompletions": true
   },
-  "gitmoji.asSuffix": true,
-  "gitmoji.showEmojiCode": true,
-  "go.toolsManagement.autoUpdate": true,
   "inlineChat.enableV2": true,
   "material-icon-theme.files.associations": {
     "*.helmfile.yaml": "helm",
@@ -210,5 +204,8 @@
   "claudeCode.preferredLocation": "panel",
   "chat.mcp.gallery.enabled": true,
   "workbench.secondarySideBar.defaultVisibility": "visible",
-  "claudeCode.useTerminal": true
+  "claudeCode.useTerminal": true,
+  "workbench.colorCustomizations": {},
+  "git.blame.ignoreWhitespace": true,
+  "git.blame.statusBarItem.enabled": true
 }

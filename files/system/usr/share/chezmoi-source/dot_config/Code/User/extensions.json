@@ -33,6 +33,5 @@
   "redhat.vscode-xml",
   "redhat.vscode-yaml",
   "tamasfe.even-better-toml",
-  "timonwong.shellcheck",
-  "waderyan.gitblame"
+  "timonwong.shellcheck"
 ]
