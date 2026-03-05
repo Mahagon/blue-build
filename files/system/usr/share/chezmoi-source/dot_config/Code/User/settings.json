@@ -109,7 +109,12 @@
   "python.analysis.autoFormatStrings": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoSearchPaths": true,
-  "python.analysis.exclude": [".venv/**"],
+  "python.analysis.exclude": [
+    ".venv/**",
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*"
+  ],
   "python.analysis.inlayHints.callArgumentNames": "all",
   "python.analysis.inlayHints.functionReturnTypes": true,
   "python.analysis.inlayHints.pytestParameters": true,
@@ -207,5 +212,6 @@
   "claudeCode.useTerminal": true,
   "workbench.colorCustomizations": {},
   "git.blame.ignoreWhitespace": true,
-  "git.blame.statusBarItem.enabled": true
+  "git.blame.statusBarItem.enabled": true,
+  "github-enterprise.uri": "https://github.zvoove.com/"
 }
