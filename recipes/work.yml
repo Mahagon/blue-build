@@ -56,6 +56,7 @@ modules:
       - install-yq.sh
       - install-gh-dash.sh
       - install-terraform-tui.sh
+      - install-argonaut.sh
   - type: default-flatpaks
     configurations:
       - scope: system
