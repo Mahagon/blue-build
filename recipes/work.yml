@@ -55,6 +55,7 @@ modules:
       - install-prettier.sh
       - install-yq.sh
       - install-gh-dash.sh
+      - install-terraform-tui.sh
   - type: default-flatpaks
     configurations:
       - scope: system
