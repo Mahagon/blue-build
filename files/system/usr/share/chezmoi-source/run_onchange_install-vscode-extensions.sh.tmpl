@@ -1,6 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-
-{{ range (include "dot_config/Code/User/extensions.json" | fromJson) -}}
-code --install-extension {{ . }} --force
-{{ end -}}
