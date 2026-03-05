@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=github-releases depName=idoavrah/terraform-tui
-TERRAFORM_TUI_VERSION="0.13.5"
+TERRAFORM_TUI_VERSION="0.13.4"
 
 echo "Installing terraform-tui ${TERRAFORM_TUI_VERSION}..."
-pip install --quiet "tftui==${TERRAFORM_TUI_VERSION}"
+python3 -m pip install --quiet "tftui==${TERRAFORM_TUI_VERSION}"
