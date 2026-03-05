@@ -35,6 +35,7 @@ modules:
       - chezmoi
       - starship
       - pre-commit
+      - uv
       - nodejs
       - fzf
     remove:
