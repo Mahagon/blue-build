@@ -54,6 +54,7 @@ modules:
       - install-shfmt.sh
       - install-prettier.sh
       - install-yq.sh
+      - install-gh-dash.sh
   - type: default-flatpaks
     configurations:
       - scope: system
