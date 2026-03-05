@@ -35,7 +35,6 @@ modules:
       - chezmoi
       - starship
       - pre-commit
-      - python3-pip
       - nodejs
       - fzf
     remove:
