@@ -5,7 +5,7 @@ set -euo pipefail
 ARGONAUT_VERSION="2.14.1"
 
 echo "Installing argonaut ${ARGONAUT_VERSION}..."
-curl -fsSL "https://github.com/darksworm/argonaut/releases/download/v${ARGONAUT_VERSION}/argonaut_Linux_x86_64.tar.gz" \
+curl -fsSL "https://github.com/darksworm/argonaut/releases/download/v${ARGONAUT_VERSION}/argonaut-${ARGONAUT_VERSION}-linux-amd64.tar.gz" \
   -o /tmp/argonaut.tar.gz
 tar xzf /tmp/argonaut.tar.gz -C /tmp argonaut
 mv /tmp/argonaut /usr/bin/argonaut
