@@ -38,6 +38,7 @@ modules:
       - uv
       - nodejs
       - fzf
+      - yamllint
     remove:
       - firefox
       - firefox-langpacks
