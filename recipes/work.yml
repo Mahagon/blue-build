@@ -39,6 +39,7 @@ modules:
       - nodejs
       - fzf
       - yamllint
+      - pylint
     remove:
       - firefox
       - firefox-langpacks
