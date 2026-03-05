@@ -57,6 +57,7 @@ modules:
       - install-gh-dash.sh
       - install-terraform-tui.sh
       - install-argonaut.sh
+      - install-eks-node-viewer.sh
   - type: default-flatpaks
     configurations:
       - scope: system
