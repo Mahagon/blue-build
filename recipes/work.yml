@@ -58,6 +58,7 @@ modules:
       - install-terraform-tui.sh
       - install-argonaut.sh
       - install-eks-node-viewer.sh
+      - install-podman-tui.sh
   - type: default-flatpaks
     configurations:
       - scope: system
