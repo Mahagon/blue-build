@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=github-releases depName=dlvhdr/gh-dash
-GH_DASH_VERSION="4.23.1"
+GH_DASH_VERSION="4.23.2"
 
 echo "Installing gh-dash ${GH_DASH_VERSION}..."
 curl -fsSL "https://github.com/dlvhdr/gh-dash/releases/download/v${GH_DASH_VERSION}/gh-dash_v${GH_DASH_VERSION}_linux-amd64" \
