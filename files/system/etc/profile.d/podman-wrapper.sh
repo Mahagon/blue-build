@@ -6,4 +6,3 @@
 podman() {
     systemd-run --user --wait --pipe --quiet -p NoNewPrivileges=no -- /usr/bin/podman "$@"
 }
-export -f podman
