@@ -25,6 +25,7 @@ modules:
       - terraform
       - k9s
       - gh
+      - ghc-git-lfs
       - tig
       - azure-cli
       - awscli2
