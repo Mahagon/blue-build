@@ -52,6 +52,38 @@ gu() {
 alias gaa="git add ."
 alias gau="git add -u"
 
+grelease() {
+  local kind="${1}"
+  local name="${2}"
+  local version="${3}"
+
+  if [[ -z $kind || -z $name || -z $version ]]; then
+    echo "Usage: grelease [image|chart] <name> <version>"
+    return 1
+  fi
+
+  if [[ $kind != "image" && $kind != "chart" ]]; then
+    echo "Error: kind must be 'image' or 'chart'"
+    return 1
+  fi
+
+  local tag="release/${kind}/${name}/${version}"
+
+  if git rev-parse "$tag" &>/dev/null; then
+    read -r -p "Tag '$tag' already exists. Force overwrite? (y/n): " REPLY
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      git tag -f "$tag"
+      git push origin "refs/tags/${tag}" --force
+    else
+      echo "Aborted."
+      return 1
+    fi
+  else
+    git tag "$tag"
+    git push origin "refs/tags/${tag}"
+  fi
+}
+
 if [[ -n "${BASH_VERSION:-}" ]]; then
   _git_branches() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -60,4 +92,29 @@ if [[ -n "${BASH_VERSION:-}" ]]; then
     mapfile -t COMPREPLY < <(compgen -W "$branches" -- "$cur")
   }
   complete -F _git_branches gmerge
+
+  _grelease() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local kind="${COMP_WORDS[1]}"
+
+    case $COMP_CWORD in
+      1)
+        mapfile -t COMPREPLY < <(compgen -W "image chart" -- "$cur")
+        ;;
+      2)
+        local base_dir
+        if [[ $kind == "image" ]]; then
+          base_dir="infrastructure/images"
+        elif [[ $kind == "chart" ]]; then
+          base_dir="infrastructure/charts"
+        fi
+        if [[ -n $base_dir && -d $base_dir ]]; then
+          local names
+          names=$(ls -1 "$base_dir" 2>/dev/null)
+          mapfile -t COMPREPLY < <(compgen -W "$names" -- "$cur")
+        fi
+        ;;
+    esac
+  }
+  complete -F _grelease grelease
 fi
