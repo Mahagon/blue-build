@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=github-releases depName=containers/podman-tui
-PODMAN_TUI_VERSION="1.11.0"
+PODMAN_TUI_VERSION="1.11.1"
 
 echo "Installing podman-tui ${PODMAN_TUI_VERSION}..."
 curl -fsSL "https://github.com/containers/podman-tui/releases/download/v${PODMAN_TUI_VERSION}/podman-tui-release-linux_amd64.zip" \
