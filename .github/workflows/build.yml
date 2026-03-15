@@ -57,6 +57,11 @@ jobs:
           pr_event_number: ${{ github.event.number }}
           build_chunked_oci: true
           maximize_build_space: false
+      - name: Cleanup old images from GHCR
+        uses: dataaxiom/ghcr-cleanup-action@cd0cdb900b5dbf3a6f2cc869f0dbb0b8211f50c4 # v1
+        with:
+          older-than: 7d
+          package: work-cosmic-desktop
   build-gaming:
     name: Build Custom Image (gaming.yml)
     needs: changes
@@ -76,3 +81,8 @@ jobs:
           pr_event_number: ${{ github.event.number }}
           build_chunked_oci: true
           maximize_build_space: false
+      - name: Cleanup old images from GHCR
+        uses: dataaxiom/ghcr-cleanup-action@cd0cdb900b5dbf3a6f2cc869f0dbb0b8211f50c4 # v1
+        with:
+          older-than: 7d
+          package: gaming-desktop
