@@ -1,50 +1,43 @@
-# BlueBuild Template &nbsp; [![bluebuild build badge](https://github.com/mahagon/blue-build/actions/workflows/build.yml/badge.svg)](https://github.com/mahagon/blue-build/actions/workflows/build.yml)
+# blue-build &nbsp; [![build](https://github.com/mahagon/blue-build/actions/workflows/build.yml/badge.svg)](https://github.com/mahagon/blue-build/actions/workflows/build.yml)
 
-See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
+Personal [BlueBuild](https://blue-build.org) repository that produces two custom Fedora Atomic OCI images.
 
-After setup, it is recommended you update this README to describe your custom image.
+| Image                                 | Base                    | Desktop  | Use         |
+| ------------------------------------- | ----------------------- | -------- | ----------- |
+| `ghcr.io/mahagon/work-cosmic-desktop` | Fedora COSMIC Atomic 43 | COSMIC   | Work laptop |
+| `ghcr.io/mahagon/gaming-desktop`      | Bazzite (stable)        | Hyprland | Gaming PC   |
+
+Images are built automatically via GitHub Actions on every relevant push and on a daily schedule. Only the image(s) affected by changed files are rebuilt on push.
 
 ## Installation
 
 > [!WARNING]
 > [This is an experimental feature](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable), try at your own discretion.
 
-To rebase an existing atomic Fedora installation to the latest build:
+Replace `<image>` with `work-cosmic-desktop` or `gaming-desktop`.
 
-- First rebase to the unsigned image, to get the proper signing keys and policies installed:
+**Step 1** - rebase to the unsigned image to get signing keys installed:
 
-  ```shell
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/mahagon/work-cosmic-desktop:latest
-  ```
+```shell
+rpm-ostree rebase ostree-unverified-registry:ghcr.io/mahagon/<image>:latest
+systemctl reboot
+```
 
-- Reboot to complete the rebase:
+**Step 2** - rebase to the signed image:
 
-  ```shell
-  systemctl reboot
-  ```
-
-- Then rebase to the signed image, like so:
-
-  ```shell
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mahagon/work-cosmic-desktop:latest
-  ```
-
-- Reboot again to complete the installation
-
-  ```shell
-  systemctl reboot
-  ```
-
-The `latest` tag will automatically point to the latest build. That build will still always use the Fedora version specified in `recipe.yml`, so you won't get accidentally updated to the next major version.
-
-## ISO
-
-If build on Fedora Atomic, you can generate an offline ISO with the instructions available [here](https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso). These ISOs cannot unfortunately be distributed on GitHub for free due to large sizes, so for public projects something else has to be used for hosting.
+```shell
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mahagon/<image>:latest
+systemctl reboot
+```
 
 ## Verification
 
-These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](https://github.com/sigstore/cosign). You can verify the signature by downloading the `cosign.pub` file from this repo and running the following command:
+Images are signed with [cosign](https://github.com/sigstore/cosign). Verify with:
 
 ```shell
-cosign verify --key cosign.pub ghcr.io/mahagon/work-cosmic-desktop
+cosign verify --key cosign.pub ghcr.io/mahagon/<image>
 ```
+
+## ISO
+
+If running on Fedora Atomic, you can generate an offline ISO using the instructions [here](https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso).
