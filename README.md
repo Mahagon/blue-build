@@ -2,10 +2,10 @@
 
 Personal [BlueBuild](https://blue-build.org) repository that produces two custom Fedora Atomic OCI images.
 
-| Image                                 | Base                    | Desktop  | Use         |
-| ------------------------------------- | ----------------------- | -------- | ----------- |
-| `ghcr.io/mahagon/work-cosmic-desktop` | Fedora COSMIC Atomic 43 | COSMIC   | Work laptop |
-| `ghcr.io/mahagon/gaming-desktop`      | Bazzite (stable)        | KDE      | Gaming PC   |
+| Image                                 | Base                    | Desktop | Use         |
+| ------------------------------------- | ----------------------- | ------- | ----------- |
+| `ghcr.io/mahagon/work-cosmic-desktop` | Fedora COSMIC Atomic 43 | COSMIC  | Work laptop |
+| `ghcr.io/mahagon/gaming-desktop`      | Bazzite (stable)        | KDE     | Gaming PC   |
 
 Images are built automatically via GitHub Actions on every relevant push and on a daily schedule. Only the image(s) affected by changed files are rebuilt on push.
 
@@ -28,6 +28,14 @@ systemctl reboot
 ```shell
 rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mahagon/<image>:latest
 systemctl reboot
+```
+
+## Secure Boot
+
+On first boot after rebasing, the system will prompt you to enroll the Secure Boot key (MOK). When asked for a password, enter:
+
+```shell
+universalblue
 ```
 
 ## Verification
