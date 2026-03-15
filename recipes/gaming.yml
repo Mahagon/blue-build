@@ -37,6 +37,7 @@ modules:
       - pre-commit
       - fzf
       - eza
+      - nodejs
       # --- Hyprland compositor stack ---
       - hyprland
       - hyprland-qtutils
