@@ -57,8 +57,8 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
-          build_chunked_oci: true
-          maximize_build_space: false
+          # build_chunked_oci: true
+          # maximize_build_space: true
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@cd0cdb900b5dbf3a6f2cc869f0dbb0b8211f50c4 # v1
         with:
