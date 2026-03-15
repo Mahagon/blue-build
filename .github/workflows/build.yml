@@ -62,7 +62,7 @@ jobs:
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@cd0cdb900b5dbf3a6f2cc869f0dbb0b8211f50c4 # v1
         with:
-          older-than: 7d
+          older-than: 7 days
           package: work-cosmic-desktop
   build-gaming:
     name: Build Custom Image (gaming.yml)
@@ -86,5 +86,5 @@ jobs:
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@cd0cdb900b5dbf3a6f2cc869f0dbb0b8211f50c4 # v1
         with:
-          older-than: 7d
+          older-than: 7 days
           package: gaming-desktop
