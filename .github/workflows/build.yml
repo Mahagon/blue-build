@@ -12,26 +12,67 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 jobs:
-  bluebuild:
-    name: Build Custom Image
+  changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    outputs:
+      # On scheduled runs always build both; on push only build what changed.
+      work: ${{ github.event_name == 'schedule' || steps.filter.outputs.work == 'true' }}
+      gaming: ${{ github.event_name == 'schedule' || steps.filter.outputs.gaming == 'true' }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: dorny/paths-filter@9d7afb8d214ad99e78fbd4247752c4caed2b6e4c # v4
+        id: filter
+        if: github.event_name != 'schedule'
+        with:
+          filters: |
+            work:
+              - 'recipes/work.yml'
+              - 'files/work/**'
+              - 'files/shared/**'
+              - 'files/scripts/**'
+              - '.github/workflows/build.yml'
+            gaming:
+              - 'recipes/gaming.yml'
+              - 'files/gaming/**'
+              - 'files/shared/**'
+              - 'files/scripts/**'
+              - '.github/workflows/build.yml'
+  build-work:
+    name: Build Custom Image (work.yml)
+    needs: changes
+    if: needs.changes.outputs.work == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
       id-token: write
-    strategy:
-      fail-fast: false
-      matrix:
-        recipe:
-          - work.yml
-          - gaming.yml
     steps:
       - name: Build Custom Image
         uses: blue-build/github-action@24d146df25adc2cf579e918efe2d9bff6adea408 # v1.11
         with:
-          recipe: ${{ matrix.recipe }}
+          recipe: work.yml
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           build_chunked_oci: true
-          maximize_build_space: false # Set to true, if space is an issue.
+          maximize_build_space: false
+  build-gaming:
+    name: Build Custom Image (gaming.yml)
+    needs: changes
+    if: needs.changes.outputs.gaming == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: Build Custom Image
+        uses: blue-build/github-action@24d146df25adc2cf579e918efe2d9bff6adea408 # v1.11
+        with:
+          recipe: gaming.yml
+          cosign_private_key: ${{ secrets.SIGNING_SECRET }}
+          registry_token: ${{ github.token }}
+          pr_event_number: ${{ github.event.number }}
+          build_chunked_oci: true
+          maximize_build_space: false
