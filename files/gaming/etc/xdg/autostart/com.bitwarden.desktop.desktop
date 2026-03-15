@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Bitwarden
+Exec=/usr/bin/flatpak run com.bitwarden.desktop --silent
+Terminal=false
+Type=Application
