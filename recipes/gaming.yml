@@ -31,7 +31,6 @@ modules:
       - starship
       - pre-commit
       - fzf
-      - eza
       - nodejs
       - pavucontrol
       - kitty
