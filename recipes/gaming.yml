@@ -101,9 +101,6 @@ modules:
       - wtype
       - ydotool
       - ImageMagick
-    remove:
-      - firefox
-      - firefox-langpacks
 
   - type: script
     scripts:
