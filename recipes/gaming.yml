@@ -54,5 +54,6 @@ modules:
           - io.dbeaver.DBeaverCommunity.Client.pgsql
           - com.bitwarden.desktop
           - com.discordapp.Discord
+          - com.spotify.Client
 
   - type: signing
