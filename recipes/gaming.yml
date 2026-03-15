@@ -1,19 +1,18 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-name: work-cosmic-desktop
-description: Fedora COSMIC Atomic image for work
-base-image: quay.io/fedora-ostree-desktops/cosmic-atomic
-image-version: 43
+name: gaming-desktop
+description: Bazzite-based gaming desktop with Hyprland
+base-image: ghcr.io/ublue-os/bazzite
+image-version: stable
 modules:
   - type: files
     files:
       - source: shared
         destination: /
-      - source: work
+      - source: gaming
         destination: /
   - type: rpm-ostree
     repos:
-      - https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
       - https://packages.microsoft.com/yumrepos/vscode/config.repo
       - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
       - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -24,48 +23,34 @@ modules:
       - kubernetes-client
       - just
       - helm
-      - terraform
       - k9s
       - gh
-      - ghc-git-lfs
       - tig
-      - azure-cli
-      - awscli2
-      - openconnect
-      - NetworkManager-openconnect
-      - NetworkManager-openconnect-gnome
-      - gnome-keyring
       - chezmoi
       - starship
       - pre-commit
-      - uv
-      - nodejs
       - fzf
-      - yamllint
-      - pylint
-      - openssl
+      - hyprland
+      - xdg-desktop-portal-hyprland
+      - waybar
+      - wofi
+      - hyprpaper
+      - hyprlock
+      - dunst
+      - grim
+      - slurp
+      - wl-clipboard
+      - kitty
     remove:
       - firefox
       - firefox-langpacks
-  - type: containerfile
-    snippets:
-      - RUN setcap cap_net_admin=eip /usr/bin/openconnect
   - type: script
     scripts:
       - install-bw.sh
-      - install-granted.sh
-      - install-helm-diff.sh
-      - install-helmfile.sh
-      - install-kubelogin.sh
-      - install-tflint.sh
       - install-shfmt.sh
       - install-prettier.sh
       - install-yq.sh
-      - install-gh-dash.sh
-      - install-terraform-tui.sh
       - install-argonaut.sh
-      - install-eks-node-viewer.sh
-      - install-podman-tui.sh
   - type: default-flatpaks
     configurations:
       - scope: system
@@ -74,8 +59,5 @@ modules:
         install:
           - io.dbeaver.DBeaverCommunity
           - io.dbeaver.DBeaverCommunity.Client.pgsql
-          - io.dbeaver.DBeaverCommunity.Client.mariadb
-          - io.github.peazip.PeaZip
           - com.bitwarden.desktop
-          - com.github.IsmaelMartinez.teams_for_linux
   - type: signing

@@ -24,6 +24,7 @@ jobs:
       matrix:
         recipe:
           - work.yml
+          - gaming.yml
     steps:
       - name: Build Custom Image
         uses: blue-build/github-action@24d146df25adc2cf579e918efe2d9bff6adea408 # v1.11
