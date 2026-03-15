@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: gaming-desktop
-description: Bazzite-based gaming desktop with Hyprland
+description: Bazzite-based gaming desktop with Hyprland + dots-hyprland rice
 base-image: ghcr.io/ublue-os/bazzite
 image-version: stable
 modules:
@@ -11,11 +11,16 @@ modules:
         destination: /
       - source: gaming
         destination: /
+
   - type: rpm-ostree
     repos:
       - https://packages.microsoft.com/yumrepos/vscode/config.repo
       - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
       - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+      - https://copr.fedorainfracloud.org/coprs/errornointernet/quickshell/repo/fedora-%OS_VERSION%/errornointernet-quickshell-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/ririko66z/dots-hyprland/repo/fedora-%OS_VERSION%/ririko66z-dots-hyprland-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/deltacopy/darkly/repo/fedora-%OS_VERSION%/deltacopy-darkly-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/alternateved/eza/repo/fedora-%OS_VERSION%/alternateved-eza-fedora-%OS_VERSION%.repo
     install:
       - brave-browser
       - htop
@@ -30,20 +35,76 @@ modules:
       - starship
       - pre-commit
       - fzf
+      - eza
+      # --- Hyprland compositor stack ---
       - hyprland
-      - xdg-desktop-portal-hyprland
-      - waybar
-      - wofi
-      - hyprpaper
+      - hyprland-guiutils
+      - hypridle
       - hyprlock
-      - dunst
+      - hyprpaper
+      - hyprpicker
+      - hyprsunset
+      - hyprshot
+      - xdg-desktop-portal
+      - xdg-desktop-portal-gtk
+      - xdg-desktop-portal-hyprland
+      - xdg-desktop-portal-kde
+      # --- Quickshell (replaces waybar + dunst + wofi) ---
+      - quickshell
+      - fuzzel
+      # --- Screenshot / screen tools ---
       - grim
       - slurp
+      - swappy
+      - wf-recorder
       - wl-clipboard
+      # --- KDE components (used by rice for system dialogs) ---
+      - bluedevil
+      - dolphin
+      - kdialog
+      - kf6-breeze-icons
+      - kf6-syntax-highlighting
+      - plasma-nm
+      - plasma-systemsettings
+      - polkit-kde
+      # --- Portals / auth ---
+      - gnome-keyring
+      # --- Theming ---
+      - adw-gtk3-theme
+      - bibata-cursor-theme
+      - breeze-cursor-theme
+      - darkly
+      # --- Fonts ---
+      - google-rubik-fonts
+      - jetbrains-mono-fonts-all
+      - material-icons-fonts
+      - twitter-twemoji-fonts
+      # --- Audio / media ---
+      - cava
+      - pavucontrol
+      - playerctl
+      - mpvpaper
+      # --- Desktop utilities ---
+      - bc
+      - brightnessctl
+      - cliphist
+      - jq
       - kitty
+      - qalculate
+      - ripgrep
+      - rsync
+      - songrec
+      - translate-shell
+      - upower
+      - unzip
+      - wlogout
+      - wtype
+      - ydotool
+      - ImageMagick
     remove:
       - firefox
       - firefox-langpacks
+
   - type: script
     scripts:
       - install-bw.sh
@@ -51,6 +112,8 @@ modules:
       - install-prettier.sh
       - install-yq.sh
       - install-argonaut.sh
+      - install-matugen.sh
+
   - type: default-flatpaks
     configurations:
       - scope: system
@@ -60,4 +123,5 @@ modules:
           - io.dbeaver.DBeaverCommunity
           - io.dbeaver.DBeaverCommunity.Client.pgsql
           - com.bitwarden.desktop
+
   - type: signing
