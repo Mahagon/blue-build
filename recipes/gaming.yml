@@ -107,11 +107,11 @@ modules:
 
   - type: script
     scripts:
-      - install-bw.sh
-      - install-shfmt.sh
-      - install-prettier.sh
-      - install-yq.sh
-      - install-argonaut.sh
+      - shared/install-bw.sh
+      - shared/install-shfmt.sh
+      - shared/install-prettier.sh
+      - shared/install-yq.sh
+      - shared/install-argonaut.sh
 
   - type: default-flatpaks
     configurations:

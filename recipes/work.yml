@@ -52,20 +52,20 @@ modules:
       - RUN setcap cap_net_admin=eip /usr/bin/openconnect
   - type: script
     scripts:
-      - install-bw.sh
-      - install-granted.sh
-      - install-helm-diff.sh
-      - install-helmfile.sh
-      - install-kubelogin.sh
-      - install-tflint.sh
-      - install-shfmt.sh
-      - install-prettier.sh
-      - install-yq.sh
-      - install-gh-dash.sh
-      - install-terraform-tui.sh
-      - install-argonaut.sh
-      - install-eks-node-viewer.sh
-      - install-podman-tui.sh
+      - shared/install-bw.sh
+      - shared/install-shfmt.sh
+      - shared/install-prettier.sh
+      - shared/install-yq.sh
+      - shared/install-argonaut.sh
+      - work/install-granted.sh
+      - work/install-helm-diff.sh
+      - work/install-helmfile.sh
+      - work/install-kubelogin.sh
+      - work/install-tflint.sh
+      - work/install-gh-dash.sh
+      - work/install-terraform-tui.sh
+      - work/install-eks-node-viewer.sh
+      - work/install-podman-tui.sh
   - type: default-flatpaks
     configurations:
       - scope: system

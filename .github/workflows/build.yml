@@ -30,13 +30,15 @@ jobs:
               - 'recipes/work.yml'
               - 'files/work/**'
               - 'files/shared/**'
-              - 'files/scripts/**'
+              - 'files/scripts/shared/**'
+              - 'files/scripts/work/**'
               - '.github/workflows/build.yml'
             gaming:
               - 'recipes/gaming.yml'
               - 'files/gaming/**'
               - 'files/shared/**'
-              - 'files/scripts/**'
+              - 'files/scripts/shared/**'
+              - 'files/scripts/gaming/**'
               - '.github/workflows/build.yml'
   build-work:
     name: Build Custom Image (work.yml)
