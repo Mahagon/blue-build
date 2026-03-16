@@ -57,5 +57,6 @@ modules:
           - com.bitwarden.desktop
           - com.discordapp.Discord
           - com.spotify.Client
+          - com.usebottles.bottles
 
   - type: signing
