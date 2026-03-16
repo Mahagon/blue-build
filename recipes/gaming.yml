@@ -35,6 +35,8 @@ modules:
       - kitty
       - vlc
       - onedriver
+      - ksshaskpass
+      - pinentry-qt
   - type: script
     scripts:
       - shared/install-bw.sh
