@@ -45,6 +45,7 @@ modules:
       - shared/install-prettier.sh
       - shared/install-yq.sh
       - shared/install-argonaut.sh
+      - gaming/install-hytale.sh
   - type: default-flatpaks
     configurations:
       - scope: system
@@ -56,5 +57,5 @@ modules:
           - com.bitwarden.desktop
           - com.discordapp.Discord
           - com.spotify.Client
-          - com.hypixel.HytaleLauncher
+
   - type: signing
