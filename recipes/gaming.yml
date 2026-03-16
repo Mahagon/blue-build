@@ -11,7 +11,6 @@ modules:
         destination: /
       - source: gaming
         destination: /
-
   - type: rpm-ostree
     repos:
       - https://packages.microsoft.com/yumrepos/vscode/config.repo
@@ -35,7 +34,7 @@ modules:
       - pavucontrol
       - kitty
       - vlc
-
+      - onedriver
   - type: script
     scripts:
       - shared/install-bw.sh
@@ -43,7 +42,6 @@ modules:
       - shared/install-prettier.sh
       - shared/install-yq.sh
       - shared/install-argonaut.sh
-
   - type: default-flatpaks
     configurations:
       - scope: system
@@ -56,5 +54,4 @@ modules:
           - com.discordapp.Discord
           - com.spotify.Client
           - com.hypixel.HytaleLauncher
-
   - type: signing
