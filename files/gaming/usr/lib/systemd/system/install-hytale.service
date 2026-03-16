@@ -1,0 +1,15 @@
+[Unit]
+Description=Install Hytale Launcher flatpak (first boot)
+ConditionPathExists=/usr/share/hytale-launcher.flatpak
+ConditionPathExists=!/var/lib/.hytale-installed
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/flatpak install --system --noninteractive /usr/share/hytale-launcher.flatpak
+ExecStartPost=/usr/bin/touch /var/lib/.hytale-installed
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
