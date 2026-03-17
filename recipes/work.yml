@@ -66,6 +66,8 @@ modules:
       - work/install-terraform-tui.sh
       - work/install-eks-node-viewer.sh
       - work/install-podman-tui.sh
+      - work/install-helm-docs.sh
+      - work/install-terraform-docs.sh
   - type: default-flatpaks
     configurations:
       - scope: system
