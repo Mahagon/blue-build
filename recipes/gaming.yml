@@ -39,6 +39,7 @@ modules:
       - ksshaskpass
       - pinentry-qt
       - gimp
+      - go
   - type: script
     scripts:
       - shared/install-bw.sh
