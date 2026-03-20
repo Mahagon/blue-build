@@ -38,6 +38,7 @@ modules:
       - onedriver
       - ksshaskpass
       - pinentry-qt
+      - gimp
   - type: script
     scripts:
       - shared/install-bw.sh
