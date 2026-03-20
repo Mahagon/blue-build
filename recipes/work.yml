@@ -68,6 +68,7 @@ modules:
       - work/install-podman-tui.sh
       - work/install-helm-docs.sh
       - work/install-terraform-docs.sh
+      - work/install-kubeseal.sh
   - type: default-flatpaks
     configurations:
       - scope: system
