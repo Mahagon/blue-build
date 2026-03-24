@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=helmfile/helmfile
-HELMFILE_VERSION="1.4.2"
+HELMFILE_VERSION="1.4.3"
 
 echo "Installing helmfile ${HELMFILE_VERSION}..."
 curl -fsSL "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" \
