@@ -2,19 +2,19 @@
 
 Personal [BlueBuild](https://blue-build.org) repository that produces two custom Fedora Atomic OCI images.
 
-| Image                                 | Base                    | Desktop | Use         |
-| ------------------------------------- | ----------------------- | ------- | ----------- |
-| `ghcr.io/mahagon/work-cosmic-desktop` | Fedora COSMIC Atomic 43 | COSMIC  | Work laptop |
-| `ghcr.io/mahagon/gaming-desktop`      | Bazzite (stable)        | KDE     | Gaming PC   |
+| Image                                 | Base               | Desktop    | Use         |
+| ------------------------------------- | ------------------ | ---------- | ----------- |
+| `ghcr.io/mahagon/work-aurora-desktop` | Aurora DX (stable) | KDE Plasma | Work laptop |
+| `ghcr.io/mahagon/gaming-desktop`      | Bazzite (stable)   | KDE Plasma | Gaming PC   |
 
-Images are built automatically via GitHub Actions on every relevant push and on a daily schedule. Only the image(s) affected by changed files are rebuilt on push.
+Images are built automatically via GitHub Actions on every relevant push and on a daily schedule. Only the image(s) affected by changed files are rebuilt on push. All install scripts are linted and executed in CI before the image build starts.
 
 ## Installation
 
 > [!WARNING]
 > [This is an experimental feature](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable), try at your own discretion.
 
-Replace `<image>` with `work-cosmic-desktop` or `gaming-desktop`.
+Replace `<image>` with `work-aurora-desktop` or `gaming-desktop`.
 
 **Step 1** - rebase to the unsigned image to get signing keys installed:
 
