@@ -9,7 +9,7 @@ curl -fsSL "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VE
   -o /tmp/kubelogin.zip
 curl -fsSL "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip.sha256" \
   -o /tmp/kubelogin-checksum.txt
-echo "$(cat /tmp/kubelogin-checksum.txt)  /tmp/kubelogin.zip" \
+echo "$(awk '{print $1}' /tmp/kubelogin-checksum.txt)  /tmp/kubelogin.zip" \
   | sha256sum --check
 unzip -o /tmp/kubelogin.zip -d /tmp/kubelogin
 mv /tmp/kubelogin/bin/linux_amd64/kubelogin /usr/bin/kubelogin
