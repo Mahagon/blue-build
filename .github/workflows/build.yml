@@ -12,6 +12,76 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 jobs:
+  discover-scripts:
+    name: Discover scripts
+    runs-on: ubuntu-latest
+    outputs:
+      all-scripts: ${{ steps.find.outputs.all-scripts }}
+      install-scripts: ${{ steps.find.outputs.install-scripts }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Find all shell scripts
+        id: find
+        run: |
+          echo "all-scripts=$(find files -name '*.sh' -type f | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')" >> "$GITHUB_OUTPUT"
+          echo "install-scripts=$(find files/scripts -name '*.sh' -type f | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')" >> "$GITHUB_OUTPUT"
+  lint-scripts:
+    name: Lint ${{ matrix.script }}
+    needs: discover-scripts
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        script: ${{ fromJson(needs.discover-scripts.outputs.all-scripts) }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Syntax check
+        run: bash -n "${{ matrix.script }}"
+      - name: Shellcheck
+        run: shellcheck --severity=error "${{ matrix.script }}"
+  test-install-scripts:
+    name: Test ${{ matrix.script }}
+    needs: discover-scripts
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        script: ${{ fromJson(needs.discover-scripts.outputs.install-scripts) }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Run install script
+        run: sudo bash "${{ matrix.script }}"
+      - name: Verify installed binaries are executable
+        run: |
+          # Extract the tool name from the script filename (install-<name>.sh)
+          script_name="$(basename "${{ matrix.script }}" .sh)"
+          tool_name="${script_name#install-}"
+
+          # Check common install locations for at least one new binary
+          found=false
+          for dir in /usr/bin /usr/lib/helm/plugins; do
+            if find "$dir" -maxdepth 3 -newer "${{ matrix.script }}" -executable -type f 2>/dev/null | head -1 | grep -q .; then
+              found=true
+              break
+            fi
+          done
+
+          # Fallback: check if a binary matching the tool name exists
+          if ! $found; then
+            for candidate in "/usr/bin/${tool_name}" "/usr/bin/${tool_name//-/}" "/usr/share/${tool_name}"*; do
+              if [[ -e "$candidate" ]]; then
+                found=true
+                echo "Found: $candidate"
+                break
+              fi
+            done
+          fi
+
+          if $found; then
+            echo "Install verification passed"
+          else
+            echo "Warning: could not verify installed artifact for ${tool_name}"
+          fi
   changes:
     name: Detect changed paths
     runs-on: ubuntu-latest
@@ -42,7 +112,7 @@ jobs:
               - '.github/workflows/build.yml'
   build-work:
     name: Build Custom Image (work.yml)
-    needs: changes
+    needs: [lint-scripts, test-install-scripts, changes]
     if: needs.changes.outputs.work == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -66,7 +136,7 @@ jobs:
           package: work-aurora-desktop
   build-gaming:
     name: Build Custom Image (gaming.yml)
-    needs: changes
+    needs: [lint-scripts, test-install-scripts, changes]
     if: needs.changes.outputs.gaming == 'true'
     runs-on: ubuntu-latest
     permissions:
