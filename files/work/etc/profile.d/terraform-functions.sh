@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 
+_validate_environment() {
+  local environment=$1
+  case "$environment" in
+    predev|dev|staging|prod) return 0 ;;
+    *) echo "Error: unknown environment '$environment' (expected: predev, dev, staging, prod)" >&2; return 1 ;;
+  esac
+}
+
 _gh_export_vars() {
   local environment=$1
-  while IFS= read -r line; do
-    export "$line"
+  local name value
+  while IFS='=' read -r name value; do
+    [[ "$name" =~ ^[A-Z_][A-Z0-9_]*$ ]] || { echo "Warning: skipping invalid variable name '$name'" >&2; continue; }
+    export "$name=$value"
   done < <(gh variable list --repo "zvoove-org/platform-engineering" --env "$environment" --json name,value | jq -r '.[] | "\(.name)=\(.value)"')
 }
 
 _tfaws_run() {
   local verb=$1 environment=${2:-predev} folder=${3:-infrastructure/terraform/platform-engineering}
+  _validate_environment "$environment" || return 1
   export AWS_PROFILE="$environment"
   assume "$environment"
   _gh_export_vars "$environment"
@@ -23,6 +34,7 @@ _tfaws_run() {
 tfaws() {
   local environment=${1:-predev}
   local folder=${2:-infrastructure/terraform/platform-engineering}
+  _validate_environment "$environment" || return 1
   export AWS_PROFILE="$environment"
   assume "$environment"
   terraform -chdir="${folder}" init -backend-config="./backend/${environment}.hcl" -upgrade -reconfigure
@@ -36,10 +48,11 @@ tfawsapply() { _tfaws_run apply "$@"; }
 
 tf() {
   local environment=${1:-predev}
+  _validate_environment "$environment" || return 1
   local folder=${2:-terraform/saas-infrastructure/}
   local storageaccount=${3:-$(yq -r .terraformStateStorageAccount "pipelines/saas-infrastructure/environment/${environment}.yaml")}
   local resourcegroup=${4:-$(yq -r .terraformStateResourceGroup "pipelines/saas-infrastructure/environment/${environment}.yaml")}
-  (az aks list || az login) &> /dev/null
+  _az_ensure_login
   az account set --subscription "zvoove-$environment"
   terraform -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
@@ -49,16 +62,17 @@ tf() {
 
 tfavd() {
   local environment=${1:-predev}
+  _validate_environment "$environment" || return 1
   local folder=${2:-terraform/avd/}
   local storageaccount=${3:-$(yq -r .terraformStateStorageAccount "pipelines/avd/environment/${environment}.yaml")}
   local resourcegroup=${4:-$(yq -r .terraformStateResourceGroup "pipelines/avd/environment/${environment}.yaml")}
   local subscriptionid=${5:-$(yq -r .subscriptionId "pipelines/avd/environment/${environment}.yaml")}
-  (az aks list || az login) &> /dev/null
+  _az_ensure_login
   az account set --subscription "${subscriptionid}"
   terraform -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
     -backend-config="resource_group_name=${resourcegroup}" \
-    -reconfigure -upgrade "${@:5}"
+    -reconfigure -upgrade "${@:6}"
 }
 
 _tfbootstrap_login() {
@@ -73,6 +87,7 @@ _tfbootstrap_login() {
 
 tfbootstrap() {
   local environment=${1:-predev}
+  _validate_environment "$environment" || return 1
   local folder=${2:-terraform/bootstrap/}
   local storageaccount=${3:-$(yq -r .terraformStateStorageAccount "pipelines/bootstrap/environment/${environment}.yaml")}
   local resourcegroup=${4:-$(yq -r .terraformStateResourceGroup "pipelines/bootstrap/environment/${environment}.yaml")}
@@ -87,7 +102,7 @@ tfbootstrap() {
   terraform -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
     -backend-config="resource_group_name=${resourcegroup}" \
-    -reconfigure -upgrade "${@:5}"
+    -reconfigure -upgrade "${@:8}"
 }
 
 tfbootstrapapply() {
