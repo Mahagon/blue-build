@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+_az_ensure_login() {
+  az account show &>/dev/null || az login
+}
+
 get_k8s_az_credentials() {
   local environment=${1:-predev}
-  (az aks list || az login) &> /dev/null
+  _az_ensure_login
   az account set --subscription "zvoove-$environment"
   az aks get-credentials --resource-group "RGAZSAAS" --name "zvoove-saas-$environment" --overwrite-existing
   kubelogin convert-kubeconfig -l azurecli
@@ -17,13 +21,13 @@ get_k8s_aws_credentials() {
 
 cleanup_k8s_aws_credentials() {
   local environment=${1:-predev}
-  kubectl config unset "users.zvoove-$environment-cluster"
+  kubectl config unset "users.zvoove-$environment-cluster" || true
 }
 
 cleanup_k8s_az_credentials() {
   local environment=${1:-predev}
-  kubectl config unset "users.zvoove-saas-$environment"
-  kubectl config unset "users.clusterUser_RGAZSAAS_zvoove-saas-$environment"
+  kubectl config unset "users.zvoove-saas-$environment" || true
+  kubectl config unset "users.clusterUser_RGAZSAAS_zvoove-saas-$environment" || true
 }
 
 if [[ -n "${BASH_VERSION:-}" ]]; then
