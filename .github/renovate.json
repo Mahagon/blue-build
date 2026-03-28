@@ -18,7 +18,7 @@
       "description": "Update version variables in install scripts",
       "managerFilePatterns": ["/scripts/.+\\.sh$/"],
       "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\w+=\\\"(?<currentValue>.+?)\\\""
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+extractVersion=(?<extractVersion>\\S+))?\\n\\w+=\\\"(?<currentValue>.+?)\\\""
       ]
     }
   ]
