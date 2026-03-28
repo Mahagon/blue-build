@@ -4,6 +4,10 @@ export HELM_DIFF_COLOR=true
 
 _helmfile_run() {
   local verb=$1 __subfolder=$2 __environment=${3:-predev}
+  if [[ -z $__subfolder ]]; then
+    echo "Usage: ha|hs|hd|ht <subfolder> [environment]"
+    return 1
+  fi
   local parent_folder
   parent_folder="$(basename "$(pwd)")"
   if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
@@ -23,6 +27,10 @@ ht()       { _helmfile_run "template"          "$@"; }
 hdestroy() {
   local __subfolder=${1}
   local __environment=${2:-predev}
+  if [[ -z $__subfolder ]]; then
+    echo "Usage: hdestroy <subfolder> [environment]"
+    return 1
+  fi
   read -r -n 1 -p "Are you sure to destroy the ${__subfolder} deployment? [press y] " REPLY
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -39,9 +47,9 @@ if [[ -n "${BASH_VERSION:-}" ]]; then
     parent_folder="$(basename "$(pwd)")"
     local subfolders=""
     if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-      subfolders=$(find ./k8s -maxdepth 1 -mindepth 1 -type d -exec basename {} \; 2>/dev/null)
+      subfolders=$(find ./k8s -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)
     elif [[ "$parent_folder" == "platform-engineering" ]]; then
-      subfolders=$(find ./infrastructure/k8s -maxdepth 1 -mindepth 1 -type d -exec basename {} \; 2>/dev/null)
+      subfolders=$(find ./infrastructure/k8s -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)
     fi
     mapfile -t COMPREPLY < <(compgen -W "$subfolders" -- "$cur")
   }
