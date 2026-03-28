@@ -16,18 +16,19 @@ Images are built automatically via GitHub Actions on every relevant push and on 
 
 Replace `<image>` with `work-aurora-desktop` or `gaming-desktop`.
 
-**Step 1** - rebase to the unsigned image to get signing keys installed:
+Install a stock Fedora Atomic desktop (e.g. Aurora or Bazzite) from the official ISO, then switch to the custom image:
+
+**Step 1** - switch to the custom image (unsigned, to get signing keys installed):
 
 ```shell
-rpm-ostree rebase ostree-unverified-registry:ghcr.io/mahagon/<image>:latest
+sudo bootc switch ghcr.io/mahagon/<image>:latest
 systemctl reboot
 ```
 
-**Step 2** - rebase to the signed image:
+**Step 2** - after rebooting, enforce signature verification for all future updates:
 
 ```shell
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mahagon/<image>:latest
-systemctl reboot
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/mahagon/<image>:latest
 ```
 
 ## Secure Boot
