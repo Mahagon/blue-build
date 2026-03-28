@@ -28,7 +28,7 @@ gmerge() {
 }
 
 gr() {
-  local __branch=${1:-origin/master}
+  local __branch=${1:-origin/main}
   git fetch
   git rebase "${@:2}" "${__branch}"
 }
@@ -46,6 +46,10 @@ alias gca='git commit --signoff --amend'
 
 gu() {
   local __amount=${1:-1}
+  if ! [[ "$__amount" =~ ^[0-9]+$ ]]; then
+    echo "Usage: gu [number_of_commits]"
+    return 1
+  fi
   git reset "${@:2}" --soft "HEAD~${__amount}"
 }
 
@@ -72,14 +76,14 @@ grelease() {
   if git rev-parse "$tag" &>/dev/null; then
     read -r -p "Tag '$tag' already exists. Force overwrite? (y/n): " REPLY
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-      git tag -f "$tag"
+      git tag -a -f "$tag" -m "Release ${name} version ${version}"
       git push origin "refs/tags/${tag}" --force
     else
       echo "Aborted."
       return 1
     fi
   else
-    git tag "$tag"
+    git tag -a "$tag" -m "Release ${name} version ${version}"
     git push origin "refs/tags/${tag}"
   fi
 }
@@ -110,7 +114,7 @@ if [[ -n "${BASH_VERSION:-}" ]]; then
         fi
         if [[ -n $base_dir && -d $base_dir ]]; then
           local names
-          names=$(ls -1 "$base_dir" 2>/dev/null)
+          names=$(find "$base_dir" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)
           mapfile -t COMPREPLY < <(compgen -W "$names" -- "$cur")
         fi
         ;;
