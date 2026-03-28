@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=fwdcloudsec/granted
-GRANTED_VERSION="0.38.0"
+GRANTED_VERSION="0.39.0"
 
 echo "Installing granted ${GRANTED_VERSION}..."
 curl -fsSL "https://github.com/fwdcloudsec/granted/releases/download/v${GRANTED_VERSION}/granted_${GRANTED_VERSION}_linux_x86_64.tar.gz" \
