@@ -1,9 +1,9 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-name: work-cosmic-desktop
-description: Fedora COSMIC Atomic image for work
-base-image: quay.io/fedora-ostree-desktops/cosmic-atomic
-image-version: 43
+name: work-aurora-desktop
+description: Aurora DX image for work
+base-image: ghcr.io/ublue-os/aurora-dx
+image-version: stable
 modules:
   - type: files
     files:
@@ -14,36 +14,27 @@ modules:
   - type: rpm-ostree
     repos:
       - https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
-      - https://packages.microsoft.com/yumrepos/vscode/config.repo
-      - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
       - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
     install:
       - brave-browser
-      - htop
-      - code
       - kubernetes-client
-      - just
       - helm
       - terraform
       - k9s
       - gh
-      - ghc-git-lfs
+      - git-lfs
       - tig
       - azure-cli
       - awscli2
       - openconnect
       - NetworkManager-openconnect
-      - NetworkManager-openconnect-gnome
-      - gnome-keyring
       - chezmoi
-      - starship
       - pre-commit
       - uv
       - nodejs
       - fzf
       - yamllint
       - pylint
-      - openssl
     remove:
       - firefox
       - firefox-langpacks
@@ -69,6 +60,7 @@ modules:
       - work/install-helm-docs.sh
       - work/install-terraform-docs.sh
       - work/install-kubeseal.sh
+      - work/install-kubectx.sh
   - type: default-flatpaks
     configurations:
       - scope: system
