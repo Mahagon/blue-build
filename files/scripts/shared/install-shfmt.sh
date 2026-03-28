@@ -6,6 +6,6 @@ SHFMT_VERSION="3.13.0"
 
 echo "Installing shfmt ${SHFMT_VERSION}..."
 curl -fsSL "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64" \
-  -o /usr/bin/shfmt
+  -o /tmp/shfmt
+mv /tmp/shfmt /usr/bin/shfmt
 chmod +x /usr/bin/shfmt
-ls -la /usr/bin/shfmt

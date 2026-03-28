@@ -7,10 +7,10 @@ HELMFILE_VERSION="1.4.3"
 echo "Installing helmfile ${HELMFILE_VERSION}..."
 curl -fsSL "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" \
   -o /tmp/helmfile.tar.gz
-echo "Downloaded $(stat -c%s /tmp/helmfile.tar.gz) bytes"
-echo "Archive contents:"
-tar -tzf /tmp/helmfile.tar.gz
+curl -fsSL "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_checksums.txt" \
+  -o /tmp/helmfile-checksums.txt
+echo "$(grep "helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" /tmp/helmfile-checksums.txt | awk '{print $1}')  /tmp/helmfile.tar.gz" \
+  | sha256sum --check
 tar xzf /tmp/helmfile.tar.gz -C /usr/bin helmfile
-rm -f /tmp/helmfile.tar.gz
 chmod +x /usr/bin/helmfile
-ls -la /usr/bin/helmfile
+rm -f /tmp/helmfile.tar.gz /tmp/helmfile-checksums.txt
