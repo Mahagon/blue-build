@@ -16,29 +16,22 @@ jobs:
     name: Discover scripts
     runs-on: ubuntu-latest
     outputs:
-      all-scripts: ${{ steps.find.outputs.all-scripts }}
       install-scripts: ${{ steps.find.outputs.install-scripts }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Find all shell scripts
+      - name: Find install scripts
         id: find
         run: |
-          echo "all-scripts=$(find files -name '*.sh' -type f | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')" >> "$GITHUB_OUTPUT"
           echo "install-scripts=$(find files/scripts -name '*.sh' -type f | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')" >> "$GITHUB_OUTPUT"
   lint-scripts:
-    name: Lint ${{ matrix.script }}
-    needs: discover-scripts
+    name: Lint scripts
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        script: ${{ fromJson(needs.discover-scripts.outputs.all-scripts) }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Syntax check
-        run: bash -n "${{ matrix.script }}"
-      - name: Shellcheck
-        run: shellcheck --severity=error "${{ matrix.script }}"
+      - name: Syntax check all scripts
+        run: find files -name '*.sh' -type f -exec bash -n {} +
+      - name: Shellcheck all scripts
+        run: find files -name '*.sh' -type f -exec shellcheck --severity=error {} +
   test-install-scripts:
     name: Test ${{ matrix.script }}
     needs: discover-scripts
