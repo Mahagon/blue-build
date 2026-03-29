@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "name": "Aperture Industrial",
+  "description": "Dark theme inspired by the Aperture Science ship — warm industrial grays with hazard-stripe orange accents",
+  "theme": {
+    "colors": {
+      "frame": [24, 22, 15],
+      "frame_inactive": [30, 28, 21],
+      "toolbar": [42, 39, 36],
+      "tab_background_inactive_frame_active": [34, 32, 30],
+      "tab_background_inactive_frame_inactive": [30, 28, 26],
+      "tab_text": [235, 228, 218],
+      "bookmark_text": [200, 190, 176],
+      "ntp_background": [24, 22, 15],
+      "ntp_text": [235, 228, 218],
+      "omnibox_background": [34, 32, 30],
+      "omnibox_text": [235, 228, 218],
+      "tab_background_active_frame_active": [200, 90, 40],
+      "tab_background_active_frame_inactive": [160, 72, 32],
+      "button_background": [0, 0, 0, 0]
+    },
+    "tints": {
+      "buttons": [0.06, 0.6, 0.7]
+    }
+  }
+}

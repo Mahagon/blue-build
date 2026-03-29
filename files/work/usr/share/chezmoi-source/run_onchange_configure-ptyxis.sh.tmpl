@@ -1,0 +1,16 @@
+#!/bin/bash
+# Configure Ptyxis terminal settings
+# hash: {{ include "dot_local/share/org.gnome.Ptyxis/palettes/aperture-industrial.palette" | sha256sum }}
+
+set -euo pipefail
+
+PROFILE_UUID=$(dconf list /org/gnome/Ptyxis/Profiles/ | head -1 | tr -d '/')
+
+if [[ -z "$PROFILE_UUID" ]]; then
+  PROFILE_UUID=$(cat /proc/sys/kernel/random/uuid | tr -d '-')
+  dconf write /org/gnome/Ptyxis/profile-uuids "['$PROFILE_UUID']"
+  dconf write /org/gnome/Ptyxis/default-profile-uuid "'$PROFILE_UUID'"
+fi
+
+dconf write "/org/gnome/Ptyxis/Profiles/$PROFILE_UUID/palette" "'aperture-industrial'"
+dconf write "/org/gnome/Ptyxis/Profiles/$PROFILE_UUID/opacity" 0.97
