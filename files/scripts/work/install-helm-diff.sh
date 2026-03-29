@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=databus23/helm-diff
-HELM_DIFF_VERSION="3.15.3"
+HELM_DIFF_VERSION="3.15.4"
 
 echo "Installing helm-diff ${HELM_DIFF_VERSION}..."
 mkdir -p /usr/lib/helm/plugins/helm-diff
