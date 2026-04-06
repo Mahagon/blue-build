@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Wrapper to safely set the AMD GPU power profile mode.
 # Called by the vr-on / vr-off shell functions via sudo.
-# Only accepts "vr" or "bootup_default" as arguments.
+# Only accepts "vr" or "default" as arguments.
 set -euo pipefail
 
-if [[ "${1:-}" != "vr" && "${1:-}" != "bootup_default" ]]; then
-    echo "Usage: set-vr-power-profile {vr|bootup_default}" >&2
+if [[ "${1:-}" != "vr" && "${1:-}" != "default" ]]; then
+    echo "Usage: set-vr-power-profile {vr|default}" >&2
     exit 1
 fi
 
@@ -24,4 +24,20 @@ if [[ -z "$pp_file" ]]; then
     exit 1
 fi
 
-echo "$1" > "$pp_file"
+# pp_power_profile_mode expects a numeric index, not a string.
+# Parse the file to find the index for the requested mode.
+case "$1" in
+    vr)      mode_name="VR" ;;
+    default) mode_name="BOOTUP_DEFAULT" ;;
+esac
+
+mode_index=$(awk -v name="$mode_name" '$NF == name { print $1; exit }' "$pp_file")
+
+if [[ -z "$mode_index" ]]; then
+    echo "Error: mode '$mode_name' not found in $pp_file" >&2
+    echo "Available modes:" >&2
+    cat "$pp_file" >&2
+    exit 1
+fi
+
+echo "$mode_index" > "$pp_file"

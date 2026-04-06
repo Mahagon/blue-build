@@ -15,6 +15,6 @@ vr-on() {
 }
 
 vr-off() {
-    sudo /usr/libexec/set-vr-power-profile bootup_default \
+    sudo /usr/libexec/set-vr-power-profile default \
         && echo "GPU power profile reset to default"
 }
