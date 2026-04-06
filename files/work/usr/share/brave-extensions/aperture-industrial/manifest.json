@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "version": "1.0.0",
   "name": "Aperture Industrial",
-  "description": "Dark theme inspired by the Aperture Science ship — warm industrial grays with hazard-stripe orange accents",
+  "description": "Dark theme inspired by the Aperture Science ship - warm industrial grays with hazard-stripe orange accents",
   "theme": {
     "colors": {
       "frame": [24, 22, 15],
