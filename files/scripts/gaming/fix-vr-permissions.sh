@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# Fix sudoers drop-in permissions — git cannot track 0440 mode,
+# Fix sudoers drop-in permissions - git cannot track 0440 mode,
 # so we enforce it at image build time.
 chmod 0440 /etc/sudoers.d/vr-power-profile
 
