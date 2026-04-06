@@ -10,33 +10,11 @@
 #   vr-off   - reset GPU to default power profile
 
 vr-on() {
-    local card
-    card=$(find /sys/class/drm -maxdepth 1 -name 'card[0-9]*' -not -name '*-*' | head -1)
-    if [[ -z "$card" ]]; then
-        echo "Error: no GPU found in /sys/class/drm" >&2
-        return 1
-    fi
-    local pp_file="$card/device/pp_power_profile_mode"
-    if [[ ! -f "$pp_file" ]]; then
-        echo "Error: $pp_file not found - is this an AMD GPU?" >&2
-        return 1
-    fi
-    echo "vr" | sudo tee "$pp_file" > /dev/null
-    echo "GPU power profile set to VR ($(basename "$card"))"
+    sudo /usr/libexec/set-vr-power-profile vr \
+        && echo "GPU power profile set to VR"
 }
 
 vr-off() {
-    local card
-    card=$(find /sys/class/drm -maxdepth 1 -name 'card[0-9]*' -not -name '*-*' | head -1)
-    if [[ -z "$card" ]]; then
-        echo "Error: no GPU found in /sys/class/drm" >&2
-        return 1
-    fi
-    local pp_file="$card/device/pp_power_profile_mode"
-    if [[ ! -f "$pp_file" ]]; then
-        echo "Error: $pp_file not found - is this an AMD GPU?" >&2
-        return 1
-    fi
-    echo "bootup_default" | sudo tee "$pp_file" > /dev/null
-    echo "GPU power profile reset to default ($(basename "$card"))"
+    sudo /usr/libexec/set-vr-power-profile bootup_default \
+        && echo "GPU power profile reset to default"
 }

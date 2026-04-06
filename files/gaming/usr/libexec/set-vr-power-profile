@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Wrapper to safely set the AMD GPU power profile mode.
+# Called by the vr-on / vr-off shell functions via sudo.
+# Only accepts "vr" or "bootup_default" as arguments.
+set -euo pipefail
+
+if [[ "${1:-}" != "vr" && "${1:-}" != "bootup_default" ]]; then
+    echo "Usage: set-vr-power-profile {vr|bootup_default}" >&2
+    exit 1
+fi
+
+# Find the first GPU with power profile support (AMD discrete GPU)
+pp_file=""
+while IFS= read -r -d '' card; do
+    candidate="$card/device/pp_power_profile_mode"
+    if [[ -f "$candidate" ]]; then
+        pp_file="$candidate"
+        break
+    fi
+done < <(find /sys/class/drm -maxdepth 1 -name 'card[0-9]*' -not -name '*-*' -print0 | sort -z)
+
+if [[ -z "$pp_file" ]]; then
+    echo "Error: no AMD GPU with power profile support found" >&2
+    exit 1
+fi
+
+echo "$1" > "$pp_file"
