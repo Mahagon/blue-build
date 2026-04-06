@@ -60,5 +60,6 @@ modules:
           - com.discordapp.Discord
           - com.spotify.Client
           - com.usebottles.bottles
+          - io.github.ilya_zlobintsev.LACT
 
   - type: signing
