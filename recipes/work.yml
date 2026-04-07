@@ -29,6 +29,7 @@ modules:
       - openconnect
       - NetworkManager-openconnect
       - chezmoi
+      - p7zip-plugins
       - pre-commit
       - uv
       - nodejs
