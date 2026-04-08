@@ -29,7 +29,7 @@ modules:
       - openconnect
       - NetworkManager-openconnect
       - chezmoi
-      - p7zip-plugins
+      - 7zip
       - pre-commit
       - uv
       - nodejs
@@ -70,7 +70,6 @@ modules:
           - io.dbeaver.DBeaverCommunity
           - io.dbeaver.DBeaverCommunity.Client.pgsql
           - io.dbeaver.DBeaverCommunity.Client.mariadb
-          - io.github.peazip.PeaZip
           - com.bitwarden.desktop
           - com.github.IsmaelMartinez.teams_for_linux
   - type: signing
