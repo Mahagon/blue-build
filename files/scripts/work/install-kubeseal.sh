@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=bitnami-labs/sealed-secrets
-KUBESEAL_VERSION="0.36.1"
+KUBESEAL_VERSION="0.36.3"
 
 echo "Installing kubeseal ${KUBESEAL_VERSION}..."
 curl -fsSL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz" \
