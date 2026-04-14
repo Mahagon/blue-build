@@ -1,0 +1,17 @@
+views:
+  v1/nodes:
+    sortColumn: TYPE:asc
+    columns:
+      - NAME
+      - TYPE:.metadata.labels.karpenter\.sh/nodepool
+      - STATUS
+      - TAINTS
+      - VERSION
+      - PODS
+      - AGE
+      - CPU
+      - MEM
+      - "%CPU"
+      - "%MEM"
+      - CPU/A
+      - MEM/A
