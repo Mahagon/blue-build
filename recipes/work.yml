@@ -61,6 +61,7 @@ modules:
       - work/install-terraform-docs.sh
       - work/install-kubeseal.sh
       - work/install-kubectx.sh
+      - work/install-pluto.sh
   - type: default-flatpaks
     configurations:
       - scope: system
