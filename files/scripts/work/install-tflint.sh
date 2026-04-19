@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=terraform-linters/tflint
-TFLINT_VERSION="0.61.0"
+TFLINT_VERSION="0.62.0"
 
 echo "Installing tflint ${TFLINT_VERSION}..."
 curl -fsSL "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
