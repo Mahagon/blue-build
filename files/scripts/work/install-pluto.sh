@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=FairwindsOps/pluto
-PLUTO_VERSION="5.23.5"
+PLUTO_VERSION="5.24.0"
 
 echo "Installing pluto ${PLUTO_VERSION}..."
 curl -fsSL "https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" \
