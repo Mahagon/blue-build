@@ -95,7 +95,6 @@ tfbootstrap() {
   local tenantid=${6:-$(yq -r .tenantId "pipelines/bootstrap/environment/${environment}.yaml")}
   local subscriptionid=${7:-$(yq -r .subscriptionId "pipelines/bootstrap/environment/${environment}.yaml")}
   local clientsecret
-  clientsecret=$(gopass show "zvoove-saas/azure/${environment}/bootstrap-pipeline-service-principal")
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
   _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid"
   az account set --subscription "zvoove-$environment"
@@ -119,7 +118,6 @@ tfbootstrapapply() {
   local subscriptionid
   subscriptionid=$(yq -r .subscriptionId "pipelines/bootstrap/environment/${environment}.yaml")
   local clientsecret
-  clientsecret=$(gopass show "zvoove-saas/azure/${environment}/bootstrap-pipeline-service-principal")
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
   _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid"
   az account set --subscription "zvoove-$environment"
