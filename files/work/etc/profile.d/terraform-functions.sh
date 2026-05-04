@@ -80,7 +80,7 @@ _tfbootstrap_login() {
   export ARM_CLIENT_ID="$clientid"
   export ARM_CLIENT_SECRET="$clientsecret"
   export ARM_TENANT_ID="$tenantid"
-  az login --service-principal --username "$clientid" --password "$clientsecret" --tenant "$tenantid" || return 1
+  az login --service-principal --username "$clientid" --password="$clientsecret" --tenant "$tenantid" || return 1
 }
 
 tfbootstrap() {
