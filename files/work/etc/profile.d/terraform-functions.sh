@@ -80,9 +80,7 @@ _tfbootstrap_login() {
   export ARM_CLIENT_ID="$clientid"
   export ARM_CLIENT_SECRET="$clientsecret"
   export ARM_TENANT_ID="$tenantid"
-  # Pass secret via env var prefix to avoid exposure in process args
-  AZURE_CLIENT_SECRET="$clientsecret" \
-    az login --service-principal --username "$clientid" --tenant "$tenantid"
+  az login --service-principal --username "$clientid" --password "$clientsecret" --tenant "$tenantid"
 }
 
 tfbootstrap() {
@@ -95,6 +93,7 @@ tfbootstrap() {
   local tenantid=${6:-$(yq -r .tenantId "pipelines/bootstrap/environment/${environment}.yaml")}
   local subscriptionid=${7:-$(yq -r .subscriptionId "pipelines/bootstrap/environment/${environment}.yaml")}
   local clientsecret
+  read -rsp "Client secret for $environment: " clientsecret; echo
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
   _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid"
   az account set --subscription "zvoove-$environment"
@@ -118,6 +117,7 @@ tfbootstrapapply() {
   local subscriptionid
   subscriptionid=$(yq -r .subscriptionId "pipelines/bootstrap/environment/${environment}.yaml")
   local clientsecret
+  read -rsp "Client secret for $environment: " clientsecret; echo
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
   _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid"
   az account set --subscription "zvoove-$environment"
