@@ -80,7 +80,7 @@ _tfbootstrap_login() {
   export ARM_CLIENT_ID="$clientid"
   export ARM_CLIENT_SECRET="$clientsecret"
   export ARM_TENANT_ID="$tenantid"
-  az login --service-principal --username "$clientid" --password "$clientsecret" --tenant "$tenantid"
+  az login --service-principal --username "$clientid" --password "$clientsecret" --tenant "$tenantid" || return 1
 }
 
 tfbootstrap() {
@@ -95,7 +95,7 @@ tfbootstrap() {
   local clientsecret
   read -rsp "Client secret for $environment: " clientsecret; echo
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
-  _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid"
+  _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid" || return 1
   az account set --subscription "zvoove-$environment"
   terraform -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
@@ -119,7 +119,7 @@ tfbootstrapapply() {
   local clientsecret
   read -rsp "Client secret for $environment: " clientsecret; echo
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
-  _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid"
+  _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid" || return 1
   az account set --subscription "zvoove-$environment"
   terraform -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
