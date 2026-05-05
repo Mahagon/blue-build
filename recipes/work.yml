@@ -66,6 +66,7 @@ modules:
       - work/install-kubectx.sh
       - work/install-kind.sh
       - work/install-pluto.sh
+      - work/install-gopass.sh
   - type: default-flatpaks
     configurations:
       - scope: system
