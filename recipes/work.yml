@@ -3,7 +3,7 @@
 name: work-aurora-desktop
 description: Aurora DX image for work
 base-image: ghcr.io/ublue-os/aurora-dx
-image-version: stable
+image-version: 44
 modules:
   - type: files
     files:
