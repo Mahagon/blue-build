@@ -46,7 +46,6 @@ modules:
       - shared/install-shfmt.sh
       - shared/install-prettier.sh
       - shared/install-yq.sh
-      - shared/install-argonaut.sh
       - gaming/install-hytale.sh
       - gaming/fix-vr-permissions.sh
   - type: default-flatpaks
