@@ -13,13 +13,12 @@ modules:
         destination: /
   - type: rpm-ostree
     repos:
-      - https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
       - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
     install:
       - brave-browser
       - kubernetes-client
       - helm
-      - terraform
+      - opentofu
       - k9s
       - gh
       - git-lfs

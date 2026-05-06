@@ -25,9 +25,9 @@ _tfaws_run() {
   _gh_export_vars "$environment"
   local tfvars_file="${folder}/${environment}.tfvars"
   if [[ -f "$tfvars_file" ]]; then
-    terraform -chdir="${folder}" "$verb" -var-file="$environment.tfvars" "${@:4}"
+    tofu -chdir="${folder}" "$verb" -var-file="$environment.tfvars" "${@:4}"
   else
-    terraform -chdir="${folder}" "$verb" "${@:4}"
+    tofu -chdir="${folder}" "$verb" "${@:4}"
   fi
 }
 
@@ -37,9 +37,9 @@ tfaws() {
   _validate_environment "$environment" || return 1
   export AWS_PROFILE="$environment"
   assume "$environment"
-  terraform -chdir="${folder}" init -backend-config="./backend/${environment}.hcl" -upgrade -reconfigure
+  tofu -chdir="${folder}" init -backend-config="./backend/${environment}.hcl" -upgrade -reconfigure
   local TERRAFORM_OUTPUTS
-  TERRAFORM_OUTPUTS=$(terraform -chdir="${folder}" output -json)
+  TERRAFORM_OUTPUTS=$(tofu -chdir="${folder}" output -json)
   export TERRAFORM_OUTPUTS
 }
 
@@ -54,7 +54,7 @@ tf() {
   local resourcegroup=${4:-$(yq -r .terraformStateResourceGroup "pipelines/saas-infrastructure/environment/${environment}.yaml")}
   _az_ensure_login
   az account set --subscription "zvoove-$environment"
-  terraform -chdir="${folder}" init \
+  tofu -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
     -backend-config="resource_group_name=${resourcegroup}" \
     -reconfigure -upgrade "${@:5}"
@@ -69,7 +69,7 @@ tfavd() {
   local subscriptionid=${5:-$(yq -r .subscriptionId "pipelines/avd/environment/${environment}.yaml")}
   _az_ensure_login
   az account set --subscription "${subscriptionid}"
-  terraform -chdir="${folder}" init \
+  tofu -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
     -backend-config="resource_group_name=${resourcegroup}" \
     -reconfigure -upgrade "${@:6}"
@@ -97,7 +97,7 @@ tfbootstrap() {
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
   _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid" || return 1
   az account set --subscription "zvoove-$environment"
-  terraform -chdir="${folder}" init \
+  tofu -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
     -backend-config="resource_group_name=${resourcegroup}" \
     -reconfigure -upgrade "${@:8}"
@@ -121,11 +121,11 @@ tfbootstrapapply() {
   export ARM_SUBSCRIPTION_ID="$subscriptionid"
   _tfbootstrap_login "$clientid" "$clientsecret" "$tenantid" || return 1
   az account set --subscription "zvoove-$environment"
-  terraform -chdir="${folder}" init \
+  tofu -chdir="${folder}" init \
     -backend-config="storage_account_name=${storageaccount}" \
     -backend-config="resource_group_name=${resourcegroup}" \
     -reconfigure -upgrade
-  terraform -chdir="${folder}" apply -var-file="$environment.tfvars" -parallelism=20 "${@:2}"
+  tofu -chdir="${folder}" apply -var-file="$environment.tfvars" -parallelism=20 "${@:2}"
 }
 
 if [[ -n "${BASH_VERSION:-}" ]]; then
