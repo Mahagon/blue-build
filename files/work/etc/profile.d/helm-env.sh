@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-export HELM_PLUGINS="/usr/lib/helm/plugins:${HOME}/.local/share/helm/plugins"
+export HELM_PLUGINS="${HOME}/.local/share/helm/plugins:/usr/lib/helm/plugins"
