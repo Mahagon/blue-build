@@ -19,8 +19,8 @@ modules:
       - brave-browser
       - kubernetes-client
       - helm
-      - opentofu
       - starship
+      - terraform
       - k9s
       - gh
       - git-lfs
