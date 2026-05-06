@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=darksworm/argonaut
-ARGONAUT_VERSION="2.16.0"
+ARGONAUT_VERSION="2.17.0"
 
 echo "Installing argonaut ${ARGONAUT_VERSION}..."
 curl -fsSL "https://github.com/darksworm/argonaut/releases/download/v${ARGONAUT_VERSION}/argonaut-${ARGONAUT_VERSION}-linux-amd64.tar.gz" \
