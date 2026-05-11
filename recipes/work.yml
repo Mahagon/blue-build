@@ -29,6 +29,8 @@ modules:
       - awscli2
       - openconnect
       - NetworkManager-openconnect
+      - openfortivpn
+      - plasma-nm-fortisslvpn
       - chezmoi
       - 7zip
       - pre-commit
