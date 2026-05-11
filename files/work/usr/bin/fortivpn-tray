@@ -1,0 +1,302 @@
+#!/usr/bin/env python3
+"""FortiVPN system tray icon for KDE Plasma with SAML authentication."""
+
+import re
+import signal
+import subprocess
+import sys
+from configparser import ConfigParser
+from pathlib import Path
+
+from PyQt6.QtCore import QProcess, QTimer
+from PyQt6.QtGui import QAction, QIcon
+from PyQt6.QtWidgets import (
+    QApplication,
+    QDialog,
+    QDialogButtonBox,
+    QFormLayout,
+    QLineEdit,
+    QMenu,
+    QSystemTrayIcon,
+)
+
+CONFIG_FILE = Path.home() / ".config" / "fortivpn.conf"
+
+ICON_CONNECTED = "network-vpn"
+ICON_CONNECTING = "network-vpn"
+ICON_DISCONNECTED = "network-disconnect"
+
+STATE_DISCONNECTED = "disconnected"
+STATE_CONNECTING = "connecting"
+STATE_CONNECTED = "connected"
+
+
+class ConfigDialog(QDialog):
+    """Dialog for configuring VPN server settings."""
+
+    def __init__(self, host: str = "", port: str = "443", parent=None):
+        """Initialise the configuration dialog.
+
+        Args:
+            host: Current VPN server hostname.
+            port: Current VPN server port.
+            parent: Parent widget.
+        """
+        super().__init__(parent)
+        self.setWindowTitle("FortiVPN Configuration")
+
+        layout = QFormLayout(self)
+
+        self.host_edit = QLineEdit(host)
+        self.host_edit.setPlaceholderText("vpn.example.com")
+        layout.addRow("Server:", self.host_edit)
+
+        self.port_edit = QLineEdit(port)
+        layout.addRow("Port:", self.port_edit)
+
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addRow(buttons)
+
+    def get_values(self) -> tuple[str, str]:
+        """Return the entered host and port values."""
+        return self.host_edit.text().strip(), self.port_edit.text().strip()
+
+
+class FortiVPNTray:
+    """System tray application for managing FortiVPN connections with SAML."""
+
+    def __init__(self):
+        """Initialise the tray application."""
+        self.app = QApplication(sys.argv)
+        self.app.setApplicationName("FortiVPN")
+        self.app.setQuitOnLastWindowClosed(False)
+
+        self.process: QProcess | None = None
+        self.state: str = STATE_DISCONNECTED
+        self.host: str = ""
+        self.port: str = "443"
+
+        self._load_config()
+        self._setup_tray()
+        self._sync_state()
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self._sync_state)
+        self.timer.start(5000)
+
+    # -- configuration --------------------------------------------------------
+
+    def _load_config(self) -> None:
+        """Load VPN server settings from the config file."""
+        config = ConfigParser()
+        if CONFIG_FILE.exists():
+            config.read(CONFIG_FILE)
+        self.host = config.get("vpn", "host", fallback="")
+        self.port = config.get("vpn", "port", fallback="443")
+
+    def _save_config(self) -> None:
+        """Persist current VPN server settings to the config file."""
+        config = ConfigParser()
+        config["vpn"] = {"host": self.host, "port": self.port}
+        CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(CONFIG_FILE, "w", encoding="utf-8") as fh:
+            config.write(fh)
+
+    # -- tray setup -----------------------------------------------------------
+
+    def _setup_tray(self) -> None:
+        """Create the system tray icon and context menu."""
+        self.tray = QSystemTrayIcon()
+
+        menu = QMenu()
+
+        self.connect_action = QAction("Connect")
+        self.connect_action.triggered.connect(self._connect)
+        menu.addAction(self.connect_action)
+
+        self.disconnect_action = QAction("Disconnect")
+        self.disconnect_action.triggered.connect(self._disconnect)
+        self.disconnect_action.setEnabled(False)
+        menu.addAction(self.disconnect_action)
+
+        menu.addSeparator()
+
+        configure_action = QAction("Configure…")
+        configure_action.triggered.connect(self._configure)
+        menu.addAction(configure_action)
+
+        menu.addSeparator()
+
+        quit_action = QAction("Quit")
+        quit_action.triggered.connect(self._quit)
+        menu.addAction(quit_action)
+
+        self.tray.setContextMenu(menu)
+        self.tray.activated.connect(self._on_activated)
+        self._update_icon()
+        self.tray.show()
+
+    def _update_icon(self) -> None:
+        """Update the tray icon and tooltip to reflect the current state."""
+        icons = {
+            STATE_CONNECTED: (
+                ICON_CONNECTED,
+                f"FortiVPN: Connected ({self.host})",
+            ),
+            STATE_CONNECTING: (
+                ICON_CONNECTING,
+                f"FortiVPN: Connecting to {self.host}…",
+            ),
+            STATE_DISCONNECTED: (
+                ICON_DISCONNECTED,
+                "FortiVPN: Disconnected",
+            ),
+        }
+        icon_name, tooltip = icons[self.state]
+        self.tray.setIcon(QIcon.fromTheme(icon_name))
+        self.tray.setToolTip(tooltip)
+
+        is_idle = self.state == STATE_DISCONNECTED
+        self.connect_action.setEnabled(is_idle)
+        self.disconnect_action.setEnabled(not is_idle)
+
+    # -- connection management ------------------------------------------------
+
+    def _on_activated(self, reason) -> None:
+        """Toggle VPN on left-click."""
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:
+            if self.state == STATE_DISCONNECTED:
+                self._connect()
+            else:
+                self._disconnect()
+
+    def _connect(self) -> None:
+        """Start an openfortivpn connection with SAML authentication."""
+        if not self.host:
+            self._configure()
+            if not self.host:
+                return
+
+        self.state = STATE_CONNECTING
+        self._update_icon()
+
+        self.process = QProcess()
+        self.process.setProcessChannelMode(
+            QProcess.ProcessChannelMode.MergedChannels,
+        )
+        self.process.readyReadStandardOutput.connect(self._on_output)
+        self.process.finished.connect(self._on_finished)
+        self.process.start(
+            "pkexec",
+            ["/usr/bin/fortivpn-ctl", "connect", f"{self.host}:{self.port}"],
+        )
+
+    def _on_output(self) -> None:
+        """Parse openfortivpn output for SAML URL and tunnel status."""
+        if not self.process:
+            return
+        data = self.process.readAllStandardOutput().data().decode(errors="replace")
+
+        # Open SAML URL in the user's browser
+        match = re.search(r"Authenticate at '(.+?)'", data)
+        if match:
+            subprocess.Popen(
+                ["xdg-open", match.group(1)],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+
+        # Detect successful tunnel establishment
+        if "Tunnel is up" in data:
+            self.state = STATE_CONNECTED
+            self._update_icon()
+            self.tray.showMessage(
+                "FortiVPN",
+                "Connected",
+                QSystemTrayIcon.MessageIcon.Information,
+                3000,
+            )
+
+    def _on_finished(self, exit_code: int, _exit_status) -> None:
+        """Handle openfortivpn process exit."""
+        was_connected = self.state == STATE_CONNECTED
+        self.state = STATE_DISCONNECTED
+        self._update_icon()
+        self.process = None
+
+        if was_connected:
+            self.tray.showMessage(
+                "FortiVPN",
+                "Disconnected",
+                QSystemTrayIcon.MessageIcon.Warning,
+                3000,
+            )
+        elif exit_code != 0:
+            self.tray.showMessage(
+                "FortiVPN",
+                "Connection failed",
+                QSystemTrayIcon.MessageIcon.Critical,
+                5000,
+            )
+
+    def _disconnect(self) -> None:
+        """Terminate the running VPN connection."""
+        subprocess.Popen(
+            ["pkexec", "/usr/bin/fortivpn-ctl", "disconnect"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+    # -- external state sync --------------------------------------------------
+
+    def _sync_state(self) -> None:
+        """Detect externally started/stopped openfortivpn processes."""
+        result = subprocess.run(
+            ["pgrep", "-x", "openfortivpn"],
+            capture_output=True,
+            check=False,
+        )
+        is_running = result.returncode == 0
+
+        if is_running and self.state == STATE_DISCONNECTED and self.process is None:
+            self.state = STATE_CONNECTED
+            self._update_icon()
+        elif not is_running and self.state == STATE_CONNECTED and self.process is None:
+            self.state = STATE_DISCONNECTED
+            self._update_icon()
+
+    # -- dialogs --------------------------------------------------------------
+
+    def _configure(self) -> None:
+        """Show the server configuration dialog."""
+        dialog = ConfigDialog(self.host, self.port)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.host, self.port = dialog.get_values()
+            self._save_config()
+            self._update_icon()
+
+    # -- lifecycle ------------------------------------------------------------
+
+    def _quit(self) -> None:
+        """Hide the tray icon and exit."""
+        self.tray.hide()
+        self.app.quit()
+
+    def run(self) -> int:
+        """Enter the Qt event loop."""
+        return self.app.exec()
+
+
+def main() -> None:
+    """Entry point for the FortiVPN tray application."""
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    tray = FortiVPNTray()
+    sys.exit(tray.run())
+
+
+if __name__ == "__main__":
+    main()

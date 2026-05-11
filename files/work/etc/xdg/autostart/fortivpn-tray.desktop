@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=FortiVPN Tray
+Comment=System tray icon for FortiVPN with SAML authentication
+Exec=/usr/bin/fortivpn-tray
+Icon=network-vpn
+Terminal=false
+Categories=Network;
+X-KDE-autostart-phase=2
+NoDisplay=true

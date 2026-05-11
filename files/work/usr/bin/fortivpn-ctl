@@ -1,0 +1,19 @@
+#!/usr/bin/bash
+# Root helper for FortiVPN management.
+# Invoked via pkexec from fortivpn-tray.
+
+set -euo pipefail
+
+case "${1:-}" in
+    connect)
+        shift
+        exec openfortivpn "$@" --saml-login
+        ;;
+    disconnect)
+        killall -INT openfortivpn 2>/dev/null || true
+        ;;
+    *)
+        echo "Usage: fortivpn-ctl {connect|disconnect}" >&2
+        exit 1
+        ;;
+esac
