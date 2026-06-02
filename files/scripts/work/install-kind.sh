@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/kind
-KIND_VERSION="0.31.0"
+KIND_VERSION="0.32.0"
 
 echo "Installing kind ${KIND_VERSION}..."
 curl -fsSL "https://github.com/kubernetes-sigs/kind/releases/download/v${KIND_VERSION}/kind-linux-amd64" \
