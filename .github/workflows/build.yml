@@ -18,7 +18,7 @@ jobs:
     outputs:
       install-scripts: ${{ steps.find.outputs.install-scripts }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - name: Find install scripts
         id: find
         run: |
@@ -27,7 +27,7 @@ jobs:
     name: Lint scripts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - name: Syntax check all scripts
         run: find files -name '*.sh' -type f -exec bash -n {} +
       - name: Shellcheck all scripts
@@ -41,7 +41,7 @@ jobs:
       matrix:
         script: ${{ fromJson(needs.discover-scripts.outputs.install-scripts) }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - name: Run install script
         run: sudo bash "${{ matrix.script }}"
       - name: Verify installed binaries are executable
@@ -83,7 +83,7 @@ jobs:
       work: ${{ github.event_name == 'schedule' || steps.filter.outputs.work == 'true' }}
       gaming: ${{ github.event_name == 'schedule' || steps.filter.outputs.gaming == 'true' }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
         id: filter
         if: github.event_name != 'schedule'
