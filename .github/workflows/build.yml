@@ -123,7 +123,7 @@ jobs:
           # build_chunked_oci: true
           # maximize_build_space: true
       - name: Cleanup old images from GHCR
-        uses: dataaxiom/ghcr-cleanup-action@f092b48ba3b604b2a83690dc4b2bbb3392e1045f # v1
+        uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1
         with:
           older-than: 7 days
           package: work-aurora-desktop
@@ -147,7 +147,7 @@ jobs:
           build_chunked_oci: true
           maximize_build_space: false
       - name: Cleanup old images from GHCR
-        uses: dataaxiom/ghcr-cleanup-action@f092b48ba3b604b2a83690dc4b2bbb3392e1045f # v1
+        uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1
         with:
           older-than: 7 days
           package: gaming-desktop
