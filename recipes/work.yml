@@ -69,6 +69,7 @@ modules:
       - work/install-kind.sh
       - work/install-pluto.sh
       - work/install-gopass.sh
+      - work/install-velero.sh
   - type: default-flatpaks
     configurations:
       - scope: system
