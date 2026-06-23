@@ -123,7 +123,7 @@ jobs:
           # build_chunked_oci: true
           # maximize_build_space: true
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           image-ref: ghcr.io/mahagon/work-aurora-desktop:latest
           severity: HIGH,CRITICAL
@@ -155,7 +155,7 @@ jobs:
           build_chunked_oci: true
           maximize_build_space: false
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           image-ref: ghcr.io/mahagon/gaming-desktop:latest
           severity: HIGH,CRITICAL
