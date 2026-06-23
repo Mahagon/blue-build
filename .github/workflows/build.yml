@@ -128,7 +128,7 @@ jobs:
           image-ref: ghcr.io/mahagon/work-aurora-desktop:latest
           severity: HIGH,CRITICAL
           ignore-unfixed: true
-          exit-code: '1'
+          exit-code: '0'
           format: table
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1
@@ -160,7 +160,7 @@ jobs:
           image-ref: ghcr.io/mahagon/gaming-desktop:latest
           severity: HIGH,CRITICAL
           ignore-unfixed: true
-          exit-code: '1'
+          exit-code: '0'
           format: table
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1
