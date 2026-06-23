@@ -42,7 +42,6 @@ modules:
       - go
   - type: script
     scripts:
-      - shared/install-headroom.sh
       - shared/install-opencode.sh
       - shared/install-bw.sh
       - shared/install-shfmt.sh
