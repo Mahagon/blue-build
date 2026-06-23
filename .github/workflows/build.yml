@@ -122,6 +122,14 @@ jobs:
           pr_event_number: ${{ github.event.number }}
           # build_chunked_oci: true
           # maximize_build_space: true
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: ghcr.io/mahagon/work-aurora-desktop:latest
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+          format: table
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1
         with:
@@ -146,6 +154,14 @@ jobs:
           pr_event_number: ${{ github.event.number }}
           build_chunked_oci: true
           maximize_build_space: false
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: ghcr.io/mahagon/gaming-desktop:latest
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+          format: table
       - name: Cleanup old images from GHCR
         uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1
         with:
