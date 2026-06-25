@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=anomalyco/opencode
-OPENCODE_VERSION="1.17.9"
+OPENCODE_VERSION="1.17.10"
 
 echo "Installing opencode ${OPENCODE_VERSION}..."
 curl -fsSL "https://github.com/anomalyco/opencode/releases/download/v${OPENCODE_VERSION}/opencode-linux-x64.tar.gz" \
