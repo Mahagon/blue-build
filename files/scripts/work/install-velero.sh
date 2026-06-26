@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=vmware-tanzu/velero
-VELERO_VERSION="1.18.1"
+VELERO_VERSION="1.18.2"
 
 echo "Installing velero ${VELERO_VERSION}..."
 curl -fsSL "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-linux-amd64.tar.gz" \
