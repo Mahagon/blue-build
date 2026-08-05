@@ -74,6 +74,7 @@ modules:
       - work/install-pluto.sh
       - work/install-gopass.sh
       - work/install-velero.sh
+      - work/install-session-manager-plugin.sh
   - type: default-flatpaks
     configurations:
       - scope: system
