@@ -42,6 +42,31 @@ gc() {
   git commit --signoff "${@:2}" --message "${__message}"
 }
 
+gm() {
+  if ! command -v claude >/dev/null; then
+    echo "claude is not installed"
+    return 1
+  fi
+  if git diff --cached --quiet; then
+    echo "no staged changes"
+    return 1
+  fi
+
+  local __message
+  __message=$(
+    git diff --cached | claude -p --effort low --output-format text --no-session-persistence \
+      --disallowedTools "Bash,Edit,Write" -- \
+      "Write a git commit message for this staged diff. Output only the message: a short subject line (max 72 chars), optionally a blank line and 1-2 sentence body focusing on why. No markdown, no quotes, no code fences."
+  ) || return 1
+
+  if [[ -z $__message ]]; then
+    echo "failed to generate commit message"
+    return 1
+  fi
+
+  git commit --signoff "${@}" --message "${__message}"
+}
+
 alias gca='git commit --signoff --amend'
 
 gu() {
