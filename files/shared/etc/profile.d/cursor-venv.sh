@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Auto-activate a project .venv in Cursor/VS Code terminals.
 # The Python Environments "command" activation times out in Cursor's bash
 # integrated terminal (shell execution of `source .../activate`).
