@@ -42,6 +42,11 @@ modules:
         - pinentry-qt
         - gimp
         - go
+  - type: containerfile
+    snippets:
+      # Brave disables Windows-style middle-button autoscroll on Linux by
+      # default. The feature name is intentionally spelled "Middel" upstream.
+      - RUN sed -i 's#"$HERE/brave" "$@" || true#"$HERE/brave" --enable-features=MiddelButtonClickAutoscroll "$@" || true#' /opt/brave.com/brave/brave-browser
   - type: script
     scripts:
       - shared/install-opencode.sh
