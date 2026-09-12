@@ -70,4 +70,9 @@ modules:
           - io.github.ilya_zlobintsev.LACT
           - com.google.AndroidStudio
 
+  - type: systemd
+    system:
+      enabled:
+        - configure-android-emulator.service
+
   - type: signing

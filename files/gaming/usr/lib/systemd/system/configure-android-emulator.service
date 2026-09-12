@@ -1,0 +1,12 @@
+[Unit]
+Description=Configure KVM access for the Android emulator
+Before=graphical.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c 'if /usr/sbin/selinuxenabled; then /usr/sbin/setsebool selinuxuser_execheap on; fi'
+ExecStart=/usr/bin/flatpak override --system --device=kvm com.google.AndroidStudio
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
