@@ -7,7 +7,7 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/flatpak install --system --noninteractive /usr/share/hytale-launcher.flatpak
+ExecStart=/usr/bin/flatpak install --system --noninteractive --or-update /usr/share/hytale-launcher.flatpak
 ExecStartPost=/usr/bin/touch /var/lib/.hytale-installed
 RemainAfterExit=yes
 

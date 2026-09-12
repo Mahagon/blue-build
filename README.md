@@ -7,7 +7,7 @@ Personal [BlueBuild](https://blue-build.org) repository that produces two custom
 | `ghcr.io/mahagon/work-aurora-desktop` | Aurora DX (stable) | KDE Plasma | Work laptop |
 | `ghcr.io/mahagon/gaming-desktop`      | Bazzite (stable)   | KDE Plasma | Gaming PC   |
 
-Images are built automatically via GitHub Actions on every relevant push and on a daily schedule. Only the image(s) affected by changed files are rebuilt on push. All install scripts are linted and executed in CI before the image build starts.
+Images are built automatically via GitHub Actions on every relevant push and on a daily schedule. Only the image(s) affected by changed files are rebuilt on push, and a manual workflow run rebuilds only the gaming image. Each image build tests its own install scripts plus the shared scripts first.
 
 ## Installation
 
