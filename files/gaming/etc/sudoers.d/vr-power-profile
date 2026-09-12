@@ -1,3 +1,0 @@
-# Allow wheel users to switch the AMD GPU power profile without a password.
-# Used by the vr-on / vr-off shell functions defined in /etc/profile.d/.
-%wheel ALL=(root) NOPASSWD: /usr/libexec/set-vr-power-profile
