@@ -42,7 +42,7 @@ modules:
         - pinentry-qt
         - gimp
         - go
-        - java-21-openjdk-devel
+        - java-25-openjdk-devel
   - type: containerfile
     snippets:
       # Brave disables Windows-style middle-button autoscroll on Linux by
