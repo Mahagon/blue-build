@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=npm depName=prettier
-PRETTIER_VERSION="3.9.8"
+PRETTIER_VERSION="3.9.9"
 
 echo "Installing prettier ${PRETTIER_VERSION}..."
 npm install -g --prefix /usr "prettier@${PRETTIER_VERSION}"
