@@ -64,6 +64,7 @@ modules:
       - shared/install-shfmt.sh
       - shared/install-prettier.sh
       - shared/install-yq.sh
+      - shared/install-opentofu.sh
       - work/install-headroom.sh
       - work/install-granted.sh
       - work/install-helm-diff.sh

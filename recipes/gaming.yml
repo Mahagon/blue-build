@@ -55,6 +55,7 @@ modules:
       - shared/install-shfmt.sh
       - shared/install-prettier.sh
       - shared/install-yq.sh
+      - shared/install-opentofu.sh
       - gaming/install-codex.sh
       - gaming/install-hytale.sh
   - type: default-flatpaks
