@@ -91,4 +91,5 @@ modules:
           - io.dbeaver.DBeaverCommunity.Client.mariadb
           - com.bitwarden.desktop
           - com.github.IsmaelMartinez.teams_for_linux
+          - com.slack.Slack
   - type: signing
