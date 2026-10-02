@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=npm depName=@openai/codex
-CODEX_VERSION="0.159.0"
+CODEX_VERSION="0.160.0"
 
 echo "Installing OpenAI Codex CLI ${CODEX_VERSION}..."
 npm install -g --prefix /usr "@openai/codex@${CODEX_VERSION}"
