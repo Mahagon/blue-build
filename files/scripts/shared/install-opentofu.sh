@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=opentofu/opentofu
-OPENTOFU_VERSION="1.13.0"
+OPENTOFU_VERSION="1.13.1"
 
 echo "Installing opentofu ${OPENTOFU_VERSION}..."
 curl -fsSL "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_linux_amd64.tar.gz" \
