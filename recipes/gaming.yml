@@ -75,5 +75,8 @@ modules:
     system:
       enabled:
         - configure-android-emulator.service
+    user:
+      enabled:
+        - chezmoi-apply.service
 
   - type: signing
