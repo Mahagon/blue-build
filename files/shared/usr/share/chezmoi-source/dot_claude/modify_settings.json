@@ -1,0 +1,21 @@
+#!/bin/bash
+# Merge token-saving defaults into ~/.claude/settings.json, keeping other keys (e.g. theme).
+set -euo pipefail
+
+current="$(cat)"
+[[ -n "${current}" ]] || current='{}'
+
+defaults='{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "effortLevel": "medium",
+  "bashOutputMaxChars": 10000,
+  "promptSuggestionEnabled": false,
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
+    "MAX_MCP_OUTPUT_TOKENS": "10000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "CLAUDE_CODE_GOAL_CHECKIN_MINUTES": "0"
+  }
+}'
+
+jq --argjson defaults "${defaults}" '. * $defaults' <<<"${current}"
