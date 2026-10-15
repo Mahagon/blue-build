@@ -76,6 +76,7 @@ modules:
       - work/install-terraform-docs.sh
       - work/install-kubeseal.sh
       - work/install-kubectx.sh
+      - work/install-kustomize.sh
       - work/install-kind.sh
       - work/install-pluto.sh
       - work/install-gopass.sh
