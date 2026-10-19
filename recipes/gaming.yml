@@ -58,6 +58,7 @@ modules:
       - shared/install-opentofu.sh
       - gaming/install-codex.sh
       - gaming/install-hytale.sh
+      - gaming/install-openmvs.sh
   - type: default-flatpaks
     configurations:
       - scope: system
