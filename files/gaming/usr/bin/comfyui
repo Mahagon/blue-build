@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Runs the ComfyUI shipped in /usr/lib/comfyui. PyTorch (ROCm) and the Python
+# requirements live in a per-user venv, created on first run and upgraded once
+# a day or when the image ships a new requirements.txt. Models, outputs and
+# custom nodes live in the per-user data directory.
+set -euo pipefail
+
+# renovate: datasource=custom.pytorch-rocm depName=pytorch-rocm extractVersion=rocm(?<version>\d+(?:\.\d+)+)/?$
+ROCM_VERSION="7.14"
+
+comfyui_dir=/usr/lib/comfyui
+torch_index_url="https://download.pytorch.org/whl/rocm${ROCM_VERSION}"
+data_dir="${COMFYUI_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/comfyui}"
+venv="${data_dir}/venv"
+pip="${venv}/bin/pip"
+stamp="${venv}/.requirements.sha256"
+
+if [[ "$("${venv}/bin/python" --version 2>/dev/null)" != "$(python3 --version)" ]]; then
+  rm -rf "${venv}"
+  python3 -m venv "${venv}"
+fi
+
+# Chained with && because errexit is ignored inside an if condition.
+update() {
+  "${pip}" install --upgrade pip \
+    && "${pip}" install --upgrade torch torchvision --index-url "${torch_index_url}" \
+    && "${pip}" freeze | grep -E '^(torch|torchvision)==' >"${venv}/torch-constraints.txt" \
+    && "${pip}" install --upgrade --upgrade-strategy eager \
+      -r "${comfyui_dir}/requirements.txt" -c "${venv}/torch-constraints.txt"
+}
+
+wanted="$(cat "${comfyui_dir}/requirements.txt" <(echo "${torch_index_url}") | sha256sum | cut -d' ' -f1)"
+if [[ "$(cat "${stamp}" 2>/dev/null)" != "${wanted}" || -z "$(find "${stamp}" -mmin -1440 2>/dev/null)" ]]; then
+  echo "Updating ComfyUI Python dependencies in ${venv}..."
+  if update; then
+    echo "${wanted}" >"${stamp}"
+    # Keep already downloaded Wan 2.2 models current; never start a first download here.
+    if compgen -G "${data_dir}/models/*/wan2.2_*.sha256" >/dev/null; then
+      comfyui-download-wan22 || echo "Warning: Wan 2.2 model update failed." >&2
+    fi
+  elif [[ -f "${stamp}" ]]; then
+    echo "Warning: dependency update failed, starting with the installed versions." >&2
+  else
+    exit 1
+  fi
+fi
+
+exec "${venv}/bin/python" "${comfyui_dir}/main.py" --base-directory "${data_dir}" "$@"

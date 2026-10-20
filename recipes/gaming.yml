@@ -59,6 +59,7 @@ modules:
       - gaming/install-codex.sh
       - gaming/install-hytale.sh
       - gaming/install-openmvs.sh
+      - gaming/install-comfyui.sh
   - type: default-flatpaks
     configurations:
       - scope: system

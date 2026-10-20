@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Downloads the Wan 2.2 5B TI2V models for the ComfyUI template described at
+# https://docs.comfy.org/tutorials/video/wan/wan2_2 into the ComfyUI data dir.
+# Re-running it replaces any file whose upstream sha256 has changed.
+set -euo pipefail
+
+models_dir="${COMFYUI_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/comfyui}/models"
+hf=https://huggingface.co/Comfy-Org
+
+download() {
+  local url="$1" dest="${models_dir}/$2" sha256
+  # Hugging Face reports the sha256 of LFS files in X-Linked-Etag.
+  sha256="$(curl -fsSI "${url}" | sed -n 's/^x-linked-etag: *"\([0-9a-f]\{64\}\)".*/\1/Ip')"
+  if [[ -z "${sha256}" ]]; then
+    echo "Could not read upstream sha256 for ${url}" >&2
+    exit 1
+  fi
+  if [[ -f "${dest}" && "$(cat "${dest}.sha256" 2>/dev/null)" == "${sha256}" ]]; then
+    echo "${dest} is up to date"
+    return
+  fi
+  mkdir -p "$(dirname "${dest}")"
+  curl -fL --retry 5 --retry-all-errors -C - "${url}" -o "${dest}.part"
+  if ! echo "${sha256}  ${dest}.part" | sha256sum --check; then
+    rm -f "${dest}.part"
+    exit 1
+  fi
+  mv "${dest}.part" "${dest}"
+  echo "${sha256}" >"${dest}.sha256"
+}
+
+download "${hf}/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors" \
+  diffusion_models/wan2.2_ti2v_5B_fp16.safetensors
+download "${hf}/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors" \
+  vae/wan2.2_vae.safetensors
+download "${hf}/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors" \
+  text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors

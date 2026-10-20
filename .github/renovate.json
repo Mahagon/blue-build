@@ -12,11 +12,20 @@
   "prCreation": "immediate",
   "automerge": true,
   "automergeType": "pr",
+  "customDatasources": {
+    "pytorch-rocm": {
+      "defaultRegistryUrlTemplate": "https://download.pytorch.org/whl/",
+      "format": "html"
+    }
+  },
   "customManagers": [
     {
       "customType": "regex",
       "description": "Update version variables in install scripts",
-      "managerFilePatterns": ["/scripts/.+\\.sh$/"],
+      "managerFilePatterns": [
+        "/scripts/.+\\.sh$/",
+        "/files/gaming/usr/bin/comfyui$/"
+      ],
       "matchStrings": [
         "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+extractVersion=(?<extractVersion>\\S+))?\\n\\w+=\\\"(?<currentValue>.+?)\\\""
       ]
