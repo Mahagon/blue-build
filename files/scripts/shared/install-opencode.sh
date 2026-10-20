@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# renovate: datasource=github-releases depName=anomalyco/opencode
-OPENCODE_VERSION="1.19.3"
+# renovate: datasource=npm depName=@opencode/cli-linux-x64
+OPENCODE_VERSION="2.1.0"
 
 echo "Installing opencode ${OPENCODE_VERSION}..."
-curl -fsSL "https://github.com/anomalyco/opencode/releases/download/v${OPENCODE_VERSION}/opencode-linux-x64.tar.gz" \
-  -o /tmp/opencode.tar.gz
-tar -xzf /tmp/opencode.tar.gz -C /usr/bin opencode
+curl -fsSL "https://registry.npmjs.org/@opencode/cli-linux-x64/-/cli-linux-x64-${OPENCODE_VERSION}.tgz" \
+  -o /tmp/opencode.tgz
+tar -xzf /tmp/opencode.tgz -C /tmp package/bin/opencode
+mv /tmp/package/bin/opencode /usr/bin/opencode
 chmod +x /usr/bin/opencode
-rm -f /tmp/opencode.tar.gz
+rm -rf /tmp/opencode.tgz /tmp/package
