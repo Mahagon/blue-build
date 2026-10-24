@@ -70,7 +70,6 @@ modules:
           - com.bitwarden.desktop
           - com.discordapp.Discord
           - com.spotify.Client
-          - com.usebottles.bottles
           - io.github.ilya_zlobintsev.LACT
           - com.google.AndroidStudio
           - com.ultimaker.cura
