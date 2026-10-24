@@ -39,7 +39,7 @@ jobs:
     name: Test work script ${{ matrix.script }}
     needs: [discover-scripts, changes]
     if: needs.changes.outputs.work == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: true
       matrix:
@@ -83,7 +83,7 @@ jobs:
     name: Test gaming script ${{ matrix.script }}
     needs: [discover-scripts, changes]
     if: needs.changes.outputs.gaming == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: true
       matrix:
