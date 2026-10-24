@@ -35,7 +35,6 @@ modules:
         - fzf
         - nodejs
         - pavucontrol
-        - kitty
         - vlc
         - onedriver
         - ksshaskpass
