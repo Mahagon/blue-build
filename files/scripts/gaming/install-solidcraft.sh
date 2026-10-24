@@ -11,5 +11,7 @@ curl -fsSL "https://github.com/tangency-labs/solidcraft/releases/download/v${SOL
 curl -fsSL "https://github.com/tangency-labs/solidcraft/releases/download/v${SOLIDCRAFT_VERSION}/SHA256SUMS.txt" \
   -o /tmp/solidcraft-SHA256SUMS.txt
 (cd /tmp && grep "  ${SOLIDCRAFT_RPM}\$" solidcraft-SHA256SUMS.txt | sha256sum --check)
-dnf install -y "/tmp/${SOLIDCRAFT_RPM}"
-rm -f "/tmp/${SOLIDCRAFT_RPM}" /tmp/solidcraft-SHA256SUMS.txt
+mkdir -p /tmp/solidcraft
+rpm2cpio "/tmp/${SOLIDCRAFT_RPM}" | cpio -idm -D /tmp/solidcraft
+cp -r /tmp/solidcraft/usr/. /usr/
+rm -rf "/tmp/${SOLIDCRAFT_RPM}" /tmp/solidcraft-SHA256SUMS.txt /tmp/solidcraft
