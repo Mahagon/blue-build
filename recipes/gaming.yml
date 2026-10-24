@@ -43,6 +43,7 @@ modules:
         - gimp
         - go
         - java-25-openjdk-devel
+        - AusweisApp2
   - type: containerfile
     snippets:
       # Brave disables Windows-style middle-button autoscroll on Linux by
