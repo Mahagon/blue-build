@@ -61,6 +61,7 @@ modules:
       - gaming/install-hytale.sh
       - gaming/install-openmvs.sh
       - gaming/install-comfyui.sh
+      - gaming/install-solidcraft.sh
   - type: default-flatpaks
     configurations:
       - scope: system
