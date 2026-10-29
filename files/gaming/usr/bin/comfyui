@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # renovate: datasource=custom.pytorch-rocm depName=pytorch-rocm extractVersion=rocm(?<version>\d+(?:\.\d+)+)/?$
-ROCM_VERSION="7.14"
+ROCM_VERSION="10.1"
 
 comfyui_dir=/usr/lib/comfyui
 torch_index_url="https://download.pytorch.org/whl/rocm${ROCM_VERSION}"
