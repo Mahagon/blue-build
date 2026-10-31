@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=tangency-labs/solidcraft
-SOLIDCRAFT_VERSION="0.27.1"
+SOLIDCRAFT_VERSION="0.28.0"
 
 echo "Installing SolidCraft ${SOLIDCRAFT_VERSION}..."
 SOLIDCRAFT_RPM="solidcraft-${SOLIDCRAFT_VERSION}-linux-x86_64.rpm"
