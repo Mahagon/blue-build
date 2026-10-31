@@ -47,8 +47,10 @@ modules:
     snippets:
       # Brave disables Windows-style middle-button autoscroll on Linux by
       # default. The feature name is intentionally spelled "Middel" upstream.
-      # Vulkan: without it WebGPU finds no adapter on Linux/AMD.
-      - RUN sed -i 's#"$HERE/brave" "$@" || true#"$HERE/brave" --enable-features=MiddelButtonClickAutoscroll,Vulkan "$@" || true#' /opt/brave.com/brave/brave-browser
+      # --ignore-gpu-blocklist: the GPU is blocklisted for WebGPU, so no
+      # adapter is exposed. (--enable-features=Vulkan also works but renders
+      # YouTube videos white.)
+      - RUN sed -i 's#"$HERE/brave" "$@" || true#"$HERE/brave" --enable-features=MiddelButtonClickAutoscroll --ignore-gpu-blocklist "$@" || true#' /opt/brave.com/brave/brave-browser
   - type: script
     scripts:
       - shared/install-opencode.sh
