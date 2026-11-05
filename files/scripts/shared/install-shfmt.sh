@@ -5,7 +5,7 @@ set -euxo pipefail
 SHFMT_VERSION="3.14.1"
 
 echo "Installing shfmt ${SHFMT_VERSION}..."
-curl -fsSL "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64" \
   -o /tmp/shfmt
 mv /tmp/shfmt /usr/bin/shfmt
 chmod +x /usr/bin/shfmt

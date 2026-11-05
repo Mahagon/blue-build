@@ -5,12 +5,12 @@ set -euxo pipefail
 OPENMVS_VERSION="2.4.0"
 
 echo "Installing OpenMVS ${OPENMVS_VERSION}..."
-curl -fsSL "https://github.com/cdcseacave/openMVS/releases/download/v${OPENMVS_VERSION}/OpenMVS_Ubuntu_x64.zip" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/cdcseacave/openMVS/releases/download/v${OPENMVS_VERSION}/OpenMVS_Ubuntu_x64.zip" \
   -o /tmp/openmvs.zip
 # Upstream publishes no checksums file; use the asset digest GitHub records for the release.
 # Read it from the release page, not api.github.com: unauthenticated API calls
 # from shared CI runners get rate-limited (HTTP 403).
-curl -fsSL "https://github.com/cdcseacave/openMVS/releases/expanded_assets/v${OPENMVS_VERSION}" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/cdcseacave/openMVS/releases/expanded_assets/v${OPENMVS_VERSION}" \
   -o /tmp/openmvs-release.html
 OPENMVS_SHA256="$(python3 -c 'import re, sys
 html = open(sys.argv[1]).read()

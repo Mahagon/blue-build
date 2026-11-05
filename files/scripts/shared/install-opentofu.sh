@@ -5,9 +5,9 @@ set -euxo pipefail
 OPENTOFU_VERSION="1.13.8"
 
 echo "Installing opentofu ${OPENTOFU_VERSION}..."
-curl -fsSL "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_linux_amd64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_linux_amd64.tar.gz" \
   -o /tmp/tofu.tar.gz
-curl -fsSL "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_SHA256SUMS" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_SHA256SUMS" \
   -o /tmp/tofu-checksums.txt
 echo "$(grep " tofu_${OPENTOFU_VERSION}_linux_amd64.tar.gz$" /tmp/tofu-checksums.txt | awk '{print $1}')  /tmp/tofu.tar.gz" \
   | sha256sum --check

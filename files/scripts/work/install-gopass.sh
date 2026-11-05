@@ -5,9 +5,9 @@ set -euxo pipefail
 GOPASS_VERSION="1.17.4"
 
 echo "Installing gopass ${GOPASS_VERSION}..."
-curl -fsSL "https://github.com/gopasspw/gopass/releases/download/v${GOPASS_VERSION}/gopass-${GOPASS_VERSION}-linux-amd64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/gopasspw/gopass/releases/download/v${GOPASS_VERSION}/gopass-${GOPASS_VERSION}-linux-amd64.tar.gz" \
   -o /tmp/gopass.tar.gz
-curl -fsSL "https://github.com/gopasspw/gopass/releases/download/v${GOPASS_VERSION}/gopass_${GOPASS_VERSION}_SHA256SUMS" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/gopasspw/gopass/releases/download/v${GOPASS_VERSION}/gopass_${GOPASS_VERSION}_SHA256SUMS" \
   -o /tmp/gopass-checksums.txt
 echo "$(grep "gopass-${GOPASS_VERSION}-linux-amd64.tar.gz$" /tmp/gopass-checksums.txt | awk '{print $1}')  /tmp/gopass.tar.gz" \
   | sha256sum --check

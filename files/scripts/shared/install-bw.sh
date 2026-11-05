@@ -5,7 +5,7 @@ set -euxo pipefail
 BW_VERSION="2026.10.1"
 
 echo "Installing bw (Bitwarden CLI) ${BW_VERSION}..."
-curl -fsSL "https://github.com/bitwarden/clients/releases/download/cli-v${BW_VERSION}/bw-linux-${BW_VERSION}.zip" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/bitwarden/clients/releases/download/cli-v${BW_VERSION}/bw-linux-${BW_VERSION}.zip" \
   -o /tmp/bw.zip
 unzip -p /tmp/bw.zip bw > /tmp/bw
 mv /tmp/bw /usr/bin/bw

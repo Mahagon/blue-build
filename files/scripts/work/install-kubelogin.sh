@@ -5,9 +5,9 @@ set -euxo pipefail
 KUBELOGIN_VERSION="0.2.22"
 
 echo "Installing kubelogin ${KUBELOGIN_VERSION}..."
-curl -fsSL "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip" \
   -o /tmp/kubelogin.zip
-curl -fsSL "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip.sha256" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/Azure/kubelogin/releases/download/v${KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip.sha256" \
   -o /tmp/kubelogin-checksum.txt
 echo "$(awk '{print $1}' /tmp/kubelogin-checksum.txt)  /tmp/kubelogin.zip" \
   | sha256sum --check

@@ -5,9 +5,9 @@ set -euxo pipefail
 TFLINT_VERSION="0.65.0"
 
 echo "Installing tflint ${TFLINT_VERSION}..."
-curl -fsSL "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
   -o /tmp/tflint.zip
-curl -fsSL "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/checksums.txt" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/checksums.txt" \
   -o /tmp/tflint-checksums.txt
 echo "$(grep "tflint_linux_amd64.zip" /tmp/tflint-checksums.txt | awk '{print $1}')  /tmp/tflint.zip" \
   | sha256sum --check

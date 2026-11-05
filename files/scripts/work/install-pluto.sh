@@ -5,9 +5,9 @@ set -euxo pipefail
 PLUTO_VERSION="5.24.5"
 
 echo "Installing pluto ${PLUTO_VERSION}..."
-curl -fsSL "https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" \
   -o /tmp/pluto.tar.gz
-curl -fsSL "https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/checksums.txt" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/checksums.txt" \
   -o /tmp/pluto-checksums.txt
 echo "$(grep "pluto_${PLUTO_VERSION}_linux_amd64.tar.gz" /tmp/pluto-checksums.txt | awk '{print $1}')  /tmp/pluto.tar.gz" \
   | sha256sum --check

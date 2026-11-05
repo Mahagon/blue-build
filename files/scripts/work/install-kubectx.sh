@@ -5,11 +5,11 @@ set -euxo pipefail
 KUBECTX_VERSION="0.11.0"
 
 echo "Installing kubectx ${KUBECTX_VERSION}..."
-curl -fsSL "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubectx_v${KUBECTX_VERSION}_linux_x86_64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubectx_v${KUBECTX_VERSION}_linux_x86_64.tar.gz" \
   -o /tmp/kubectx.tar.gz
-curl -fsSL "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubens_v${KUBECTX_VERSION}_linux_x86_64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubens_v${KUBECTX_VERSION}_linux_x86_64.tar.gz" \
   -o /tmp/kubens.tar.gz
-curl -fsSL "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/checksums.txt" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/checksums.txt" \
   -o /tmp/kubectx-checksums.txt
 echo "$(grep "kubectx_v${KUBECTX_VERSION}_linux_x86_64.tar.gz" /tmp/kubectx-checksums.txt | awk '{print $1}')  /tmp/kubectx.tar.gz" \
   | sha256sum --check

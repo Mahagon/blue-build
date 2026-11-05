@@ -5,9 +5,9 @@ set -euxo pipefail
 VELERO_VERSION="1.18.4"
 
 echo "Installing velero ${VELERO_VERSION}..."
-curl -fsSL "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-linux-amd64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-linux-amd64.tar.gz" \
   -o /tmp/velero.tar.gz
-curl -fsSL "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/CHECKSUM" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/CHECKSUM" \
   -o /tmp/velero-checksums.txt
 echo "$(grep "velero-v${VELERO_VERSION}-linux-amd64.tar.gz" /tmp/velero-checksums.txt | awk '{print $1}')  /tmp/velero.tar.gz" \
   | sha256sum --check

@@ -5,9 +5,9 @@ set -euxo pipefail
 GRANTED_VERSION="0.40.0"
 
 echo "Installing granted ${GRANTED_VERSION}..."
-curl -fsSL "https://github.com/fwdcloudsec/granted/releases/download/v${GRANTED_VERSION}/granted_${GRANTED_VERSION}_linux_x86_64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/fwdcloudsec/granted/releases/download/v${GRANTED_VERSION}/granted_${GRANTED_VERSION}_linux_x86_64.tar.gz" \
   -o /tmp/granted.tar.gz
-curl -fsSL "https://github.com/fwdcloudsec/granted/releases/download/v${GRANTED_VERSION}/checksums.txt" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/fwdcloudsec/granted/releases/download/v${GRANTED_VERSION}/checksums.txt" \
   -o /tmp/granted-checksums.txt
 echo "$(grep "granted_${GRANTED_VERSION}_linux_x86_64.tar.gz" /tmp/granted-checksums.txt | awk '{print $1}')  /tmp/granted.tar.gz" \
   | sha256sum --check

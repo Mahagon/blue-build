@@ -5,9 +5,9 @@ set -euxo pipefail
 HELM_DOCS_VERSION="1.14.2"
 
 echo "Installing helm-docs ${HELM_DOCS_VERSION}..."
-curl -fsSL "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz" \
   -o /tmp/helm-docs.tar.gz
-curl -fsSL "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/checksums.txt" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/checksums.txt" \
   -o /tmp/helm-docs-checksums.txt
 echo "$(grep "helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz" /tmp/helm-docs-checksums.txt | awk '{print $1}')  /tmp/helm-docs.tar.gz" \
   | sha256sum --check

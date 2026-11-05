@@ -5,7 +5,7 @@ set -euxo pipefail
 OPENCODE_VERSION="2.2.5"
 
 echo "Installing opencode ${OPENCODE_VERSION}..."
-curl -fsSL "https://registry.npmjs.org/@opencode/cli-linux-x64/-/cli-linux-x64-${OPENCODE_VERSION}.tgz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://registry.npmjs.org/@opencode/cli-linux-x64/-/cli-linux-x64-${OPENCODE_VERSION}.tgz" \
   -o /tmp/opencode.tgz
 tar -xzf /tmp/opencode.tgz -C /tmp package/bin/opencode
 mv /tmp/package/bin/opencode /usr/bin/opencode

@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 echo "Installing session-manager-plugin..."
-curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" \
+curl -fsSL --retry 5 --retry-delay 5 "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" \
   -o /tmp/session-manager-plugin.rpm
 rpm2cpio /tmp/session-manager-plugin.rpm | cpio -idm -D /tmp/session-manager-plugin
 mv /tmp/session-manager-plugin/usr/local/sessionmanagerplugin/bin/session-manager-plugin /usr/bin/

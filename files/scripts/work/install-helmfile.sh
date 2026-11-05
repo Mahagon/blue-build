@@ -5,9 +5,9 @@ set -euxo pipefail
 HELMFILE_VERSION="1.8.2"
 
 echo "Installing helmfile ${HELMFILE_VERSION}..."
-curl -fsSL "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" \
   -o /tmp/helmfile.tar.gz
-curl -fsSL "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_checksums.txt" \
+curl -fsSL --retry 5 --retry-delay 5 "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_checksums.txt" \
   -o /tmp/helmfile-checksums.txt
 echo "$(grep "helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" /tmp/helmfile-checksums.txt | awk '{print $1}')  /tmp/helmfile.tar.gz" \
   | sha256sum --check
