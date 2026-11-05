@@ -1,0 +1,11 @@
+[Unit]
+Description=Install Hermes Agent CLI and Desktop (first login)
+ConditionPathExists=!%h/.local/bin/hermes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/hermes-install
+Nice=10
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+# Hermes Agent ships no RPM or Linux desktop package; upstream only supports
+# this per-user installer (~/.hermes, ~/.local/bin/hermes). It self-updates
+# afterwards via `hermes update`.
+INSTALLER="$(mktemp)"
+trap 'rm -f "${INSTALLER}"' EXIT
+
+curl -fsSL --retry 5 --retry-all-errors --retry-delay 10 \
+  https://hermes-agent.nousresearch.com/install.sh -o "${INSTALLER}"
+bash "${INSTALLER}" --non-interactive --include-desktop
