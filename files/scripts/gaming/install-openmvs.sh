@@ -8,12 +8,14 @@ echo "Installing OpenMVS ${OPENMVS_VERSION}..."
 curl -fsSL "https://github.com/cdcseacave/openMVS/releases/download/v${OPENMVS_VERSION}/OpenMVS_Ubuntu_x64.zip" \
   -o /tmp/openmvs.zip
 # Upstream publishes no checksums file; use the asset digest GitHub records for the release.
-curl -fsSL "https://api.github.com/repos/cdcseacave/openMVS/releases/tags/v${OPENMVS_VERSION}" \
-  -o /tmp/openmvs-release.json
-OPENMVS_SHA256="$(python3 -c 'import json, sys
-assets = json.load(open(sys.argv[1]))["assets"]
-print(next(a["digest"] for a in assets if a["name"] == "OpenMVS_Ubuntu_x64.zip").removeprefix("sha256:"))' \
-  /tmp/openmvs-release.json)"
+# Read it from the release page, not api.github.com: unauthenticated API calls
+# from shared CI runners get rate-limited (HTTP 403).
+curl -fsSL "https://github.com/cdcseacave/openMVS/releases/expanded_assets/v${OPENMVS_VERSION}" \
+  -o /tmp/openmvs-release.html
+OPENMVS_SHA256="$(python3 -c 'import re, sys
+html = open(sys.argv[1]).read()
+print(re.search(r"clipboard-button-sha256:([0-9a-f]{64})\" aria-label=\"Copy to clipboard digest for OpenMVS_Ubuntu_x64\.zip\"", html)[1])' \
+  /tmp/openmvs-release.html)"
 echo "${OPENMVS_SHA256}  /tmp/openmvs.zip" | sha256sum --check
 mkdir -p /usr/lib/openmvs
 unzip -o -q /tmp/openmvs.zip -d /usr/lib/openmvs
@@ -25,4 +27,4 @@ for tool in /usr/lib/openmvs/*; do
   [[ "${name}" == "Viewer" ]] && name="OpenMVSViewer"
   ln -sf "${tool}" "/usr/bin/${name}"
 done
-rm -f /tmp/openmvs.zip /tmp/openmvs-release.json
+rm -f /tmp/openmvs.zip /tmp/openmvs-release.html
