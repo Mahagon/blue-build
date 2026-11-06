@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=mikefarah/yq
-YQ_VERSION="4.54.1"
+YQ_VERSION="4.54.2"
 
 echo "Installing yq ${YQ_VERSION}..."
 curl -fsSL --retry 5 --retry-delay 5 "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_amd64" \
