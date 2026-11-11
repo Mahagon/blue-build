@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=Comfy-Org/ComfyUI
-COMFYUI_VERSION="0.44.0"
+COMFYUI_VERSION="0.45.0"
 
 echo "Installing ComfyUI ${COMFYUI_VERSION}..."
 # Upstream publishes no checksum for the source; git verifies object integrity.
