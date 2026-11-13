@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=npm depName=@opencode/cli-linux-x64
-OPENCODE_VERSION="2.2.7"
+OPENCODE_VERSION="2.3.0"
 
 echo "Installing opencode ${OPENCODE_VERSION}..."
 curl -fsSL --retry 5 --retry-delay 5 "https://registry.npmjs.org/@opencode/cli-linux-x64/-/cli-linux-x64-${OPENCODE_VERSION}.tgz" \
