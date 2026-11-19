@@ -2,21 +2,20 @@
 
 export HELM_DIFF_COLOR=true
 
+_helmfile_k8s_dir="infrastructure/k8s"
+
 _helmfile_run() {
   local verb=$1 __subfolder=$2 __environment=${3:-predev}
   if [[ -z $__subfolder ]]; then
     echo "Usage: ha|hs|hd|ht <subfolder> [environment]"
     return 1
   fi
-  local parent_folder
-  parent_folder="$(basename "$(pwd)")"
-  if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-    get_k8s_az_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="$verb" "./k8s/${__subfolder}/setup.sh"
-  elif [[ "$parent_folder" == "platform-engineering" ]]; then
-    get_k8s_aws_credentials "$__environment"
-    ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="$verb" "./infrastructure/k8s/${__subfolder}/setup.sh"
+  if [[ ! -d "./${_helmfile_k8s_dir}" ]]; then
+    echo "Error: ./${_helmfile_k8s_dir} not found (run from the platform-engineering repo root)" >&2
+    return 1
   fi
+  get_k8s_aws_credentials "$__environment" || return 1
+  ENVIRONMENT="${__environment}" DEV_MACHINE=1 HELMFILE_VERB="$verb" "./${_helmfile_k8s_dir}/${__subfolder}/setup.sh"
 }
 
 ha()       { _helmfile_run "apply --context 3" "$@"; }
@@ -43,14 +42,8 @@ hdestroy() {
 if [[ -n "${BASH_VERSION:-}" ]]; then
   _helmfile_subfolders() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local parent_folder
-    parent_folder="$(basename "$(pwd)")"
-    local subfolders=""
-    if [[ "$parent_folder" == "zvoove-SaaS" ]]; then
-      subfolders=$(find ./k8s -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)
-    elif [[ "$parent_folder" == "platform-engineering" ]]; then
-      subfolders=$(find ./infrastructure/k8s -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)
-    fi
+    local subfolders
+    subfolders=$(find "./${_helmfile_k8s_dir}" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' 2>/dev/null)
     mapfile -t COMPREPLY < <(compgen -W "$subfolders" -- "$cur")
   }
 
