@@ -32,7 +32,7 @@ modules:
         - openconnect
         - NetworkManager-openconnect
         - openfortivpn
-        - plasma-nm-fortisslvpn
+        - NetworkManager-fortisslvpn
         - chezmoi
         - 7zip
         - pre-commit
