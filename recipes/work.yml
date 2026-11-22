@@ -59,13 +59,11 @@ modules:
       - RUN sed -i 's#"$HERE/brave" "$@" || true#"$HERE/brave" --enable-features=MiddelButtonClickAutoscroll "$@" || true#' /opt/brave.com/brave/brave-browser
   - type: script
     scripts:
-      - shared/install-opencode.sh
       - shared/install-bw.sh
       - shared/install-shfmt.sh
       - shared/install-prettier.sh
       - shared/install-yq.sh
       - shared/install-opentofu.sh
-      - work/install-headroom.sh
       - work/install-granted.sh
       - work/install-helm-diff.sh
       - work/install-helmfile.sh
