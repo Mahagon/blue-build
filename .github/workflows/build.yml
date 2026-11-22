@@ -32,9 +32,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Syntax check all scripts
-        run: find files -name '*.sh' -type f -exec bash -n {} +
+        run: find files .github -name '*.sh' -type f -exec bash -n {} +
       - name: Shellcheck all scripts
-        run: find files -name '*.sh' -type f -exec shellcheck --severity=error {} +
+        run: find files .github -name '*.sh' -type f -exec shellcheck --severity=error {} +
+      - name: Check recipes list every install script
+        run: .github/scripts/check-recipe-scripts.sh
   test-work-install-scripts:
     name: Test work script ${{ matrix.script }}
     needs: [discover-scripts, changes]
