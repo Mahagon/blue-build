@@ -46,39 +46,10 @@ jobs:
         script: ${{ fromJson(needs.discover-scripts.outputs.work-install-scripts) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Run install script
-        run: sudo bash "${{ matrix.script }}"
-      - name: Verify installed binaries are executable
-        run: |
-          # Extract the tool name from the script filename (install-<name>.sh)
-          script_name="$(basename "${{ matrix.script }}" .sh)"
-          tool_name="${script_name#install-}"
-
-          # Check common install locations for at least one new binary
-          found=false
-          for dir in /usr/bin /usr/lib/helm/plugins; do
-            if find "$dir" -maxdepth 3 -newer "${{ matrix.script }}" -executable -type f 2>/dev/null | head -1 | grep -q .; then
-              found=true
-              break
-            fi
-          done
-
-          # Fallback: check if a binary matching the tool name exists
-          if ! $found; then
-            for candidate in "/usr/bin/${tool_name}" "/usr/bin/${tool_name//-/}" "/usr/share/${tool_name}"*; do
-              if [[ -e "$candidate" ]]; then
-                found=true
-                echo "Found: $candidate"
-                break
-              fi
-            done
-          fi
-
-          if $found; then
-            echo "Install verification passed"
-          else
-            echo "Warning: could not verify installed artifact for ${tool_name}"
-          fi
+      - name: Run install script and check it installed something
+        run: .github/scripts/test-install-script.sh "$SCRIPT"
+        env:
+          SCRIPT: ${{ matrix.script }}
   test-gaming-install-scripts:
     name: Test gaming script ${{ matrix.script }}
     needs: [discover-scripts, changes]
@@ -90,39 +61,10 @@ jobs:
         script: ${{ fromJson(needs.discover-scripts.outputs.gaming-install-scripts) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Run install script
-        run: sudo bash "${{ matrix.script }}"
-      - name: Verify installed binaries are executable
-        run: |
-          # Extract the tool name from the script filename (install-<name>.sh)
-          script_name="$(basename "${{ matrix.script }}" .sh)"
-          tool_name="${script_name#install-}"
-
-          # Check common install locations for at least one new binary
-          found=false
-          for dir in /usr/bin /usr/lib/helm/plugins; do
-            if find "$dir" -maxdepth 3 -newer "${{ matrix.script }}" -executable -type f 2>/dev/null | head -1 | grep -q .; then
-              found=true
-              break
-            fi
-          done
-
-          # Fallback: check if a binary matching the tool name exists
-          if ! $found; then
-            for candidate in "/usr/bin/${tool_name}" "/usr/bin/${tool_name//-/}" "/usr/share/${tool_name}"*; do
-              if [[ -e "$candidate" ]]; then
-                found=true
-                echo "Found: $candidate"
-                break
-              fi
-            done
-          fi
-
-          if $found; then
-            echo "Install verification passed"
-          else
-            echo "Warning: could not verify installed artifact for ${tool_name}"
-          fi
+      - name: Run install script and check it installed something
+        run: .github/scripts/test-install-script.sh "$SCRIPT"
+        env:
+          SCRIPT: ${{ matrix.script }}
   changes:
     name: Detect changed paths
     runs-on: ubuntu-latest
@@ -143,6 +85,7 @@ jobs:
               - 'files/shared/**'
               - 'files/scripts/shared/**'
               - 'files/scripts/work/**'
+              - '.github/scripts/**'
               - '.github/workflows/build.yml'
             gaming:
               - 'recipes/gaming.yml'
@@ -150,6 +93,7 @@ jobs:
               - 'files/shared/**'
               - 'files/scripts/shared/**'
               - 'files/scripts/gaming/**'
+              - '.github/scripts/**'
               - '.github/workflows/build.yml'
   build-work:
     name: Build Custom Image (work.yml)
