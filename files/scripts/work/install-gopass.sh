@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=gopasspw/gopass
-GOPASS_VERSION="1.17.4"
+GOPASS_VERSION="1.17.5"
 
 echo "Installing gopass ${GOPASS_VERSION}..."
 curl -fsSL --retry 5 --retry-delay 5 "https://github.com/gopasspw/gopass/releases/download/v${GOPASS_VERSION}/gopass-${GOPASS_VERSION}-linux-amd64.tar.gz" \
