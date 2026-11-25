@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=bitwarden/clients extractVersion=^cli-v(?<version>.+)$
-BW_VERSION="2026.11.0"
+BW_VERSION="2026.11.1"
 
 echo "Installing bw (Bitwarden CLI) ${BW_VERSION}..."
 curl -fsSL --retry 5 --retry-delay 5 "https://github.com/bitwarden/clients/releases/download/cli-v${BW_VERSION}/bw-bit-linux-${BW_VERSION}.zip" \
